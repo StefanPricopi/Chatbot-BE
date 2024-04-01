@@ -14,19 +14,73 @@ import java.util.Optional;
 public class ChatlogRepoImpl implements ChatlogRepository {
 
     /// TEMP Chatsaves instead of DB atm
-    private List<ChatEntity> chatEntities;
+    private final List<ChatEntity>  chatEntities;
 
     public ChatlogRepoImpl()
     {
         chatEntities = new ArrayList<>();
+
+        demoData();
+    }
+
+
+    private boolean doesExists(long id)
+    {
+        Optional<ChatEntity> tmp = chatEntities.stream()
+                .filter(chatEntity -> chatEntity.getId() == id)
+                .findFirst();
+
+        return !tmp.isEmpty();
+    }
+
+    private void demoData()
+    {
+        List<MessageEntity> msgTst = new ArrayList<>();
+        msgTst.add(MessageEntity.builder()
+                .user_id(1)
+                .message_id(1)
+                .message("Hello World")
+                .build());
+
+        msgTst.add(MessageEntity.builder()
+                .user_id(2)
+                .message_id(2)
+                .message("Hello world back to you chief!")
+                .build());
+
+        msgTst.add(MessageEntity.builder()
+                .user_id(1)
+                .message_id(3)
+                .message("So this is just some test data")
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(1)
+                .id(1)
+                .messages(msgTst)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(1)
+                .id(2)
+                .messages(msgTst)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(3)
+                .id(3)
+                .messages(msgTst)
+                .build());
     }
 
 
     @Override
     public void createChat(long customerId) {
         chatEntities.add(ChatEntity.builder()
-                        .id(1)
+                        // Underneath is temporary!
+                        .id(chatEntities.size() + 1)
                         .customer_id(customerId)
+                        .messages(new ArrayList<>())
                 .build());
     }
 
@@ -48,12 +102,19 @@ public class ChatlogRepoImpl implements ChatlogRepository {
     }
 
     @Override
-    public List<ChatEntity> retrieveAllChats(long chatId) {
+    public List<ChatEntity> retrieveAllChats() {
         return chatEntities;
     }
 
     @Override
-    public void deleteChat(long chatId) {
-        chatEntities.removeIf(chatEntity -> chatEntity.getId() == chatId);
+    public void deleteChat(long chatId) throws Exception {
+        try
+        {
+            chatEntities.removeIf(chatEntity -> chatEntity.getId() == chatId);
+        }
+        catch(Exception e)
+        {
+            throw new Exception("chat doesn't exist.");
+        }
     }
 }

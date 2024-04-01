@@ -2,9 +2,11 @@ package nl.fontys.s3.controller;
 
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.business.ChatLogPck.CreateChatUC;
-import nl.fontys.s3.business.ChatLogPck.LogChatUC;
-import nl.fontys.s3.domain.MessageRequest;
+import nl.fontys.s3.business.ChatLogPck.*;
+import nl.fontys.s3.domain.ChatDomains.AddMsgToChatRequest;
+import nl.fontys.s3.domain.ChatDomains.GetAllChatsResponse;
+import nl.fontys.s3.domain.ChatDomains.ReadChatResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,46 +17,89 @@ public class ChatlogController {
 
     private CreateChatUC createChatUC;
     private LogChatUC logChatUC;
+    private DeleteChatLogUC deleteChatLogUC;
+    private RetrieveChatUC retrieveChatUC;
+    private RetrieveAllChatsUC retrieveAllChatsUC;
 
 
 
     @PostMapping("/newchat")
-    public void createChatLog()
+    public ResponseEntity<String> createChatLog()
     {
         // Snap, how will I do this correctly...
 
         //Example
-        createChatUC.createChat(1);
+        try
+        {
+            createChatUC.createChat(1);
+            return ResponseEntity.ok().body("Chat has been created/opened");
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @PostMapping("/logMsg")
-    public void logMessage()
+    public ResponseEntity<String> logMessage(@RequestBody AddMsgToChatRequest request)
     {
         // saves messages in a log
         // should have an id for the chat to save it to the correct chat.
-        logChatUC.logChat(1, MessageRequest.builder()
-                        .user_id(1)
-                        .message("TestMsg")
-                        .build());
-    }
+        try
+        {
+            logChatUC.logChat(request.getChat_id(), request.getMessage());
+            return ResponseEntity.ok().body("");
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.internalServerError().body("Error " + e.getMessage());
+        }
 
-    @GetMapping("{id}")
-    public void retrieveChat()
-    {
-        // retrieves chat by id
 
     }
 
     @GetMapping("/all")
-    public void retrieveLogById(long id)
+    public ResponseEntity<GetAllChatsResponse> getAllChats()
+    {
+        try
+        {
+            return ResponseEntity.ok().body(retrieveAllChatsUC.getAllChats());
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReadChatResponse> retrieveChatById(@PathVariable(value = "id") long id)
     {
         // retrieves all chats
+        try
+        {
+            return ResponseEntity.ok().body(retrieveChatUC.retrieveChat(id));
+
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteLog()
+    public ResponseEntity<String> deleteLog(@PathVariable(value = "id") long id)
     {
         // Deletes chat
+        try
+        {
+            deleteChatLogUC.deleteChat(id);
+            return ResponseEntity.ok().body("chat deleted");
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.internalServerError().body("Error deleting chat \'" + e.getMessage() + " \'");
+        }
     }
 
 }

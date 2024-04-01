@@ -14,7 +14,7 @@ public interface ChatlogRepository {
 
     Optional<ChatEntity> retrieveChat(long chatId);
 
-    List<ChatEntity> retrieveAllChats(long chatId);
+    List<ChatEntity> retrieveAllChats();
 
-    void deleteChat(long chatId);
+    void deleteChat(long chatId) throws Exception;
 }

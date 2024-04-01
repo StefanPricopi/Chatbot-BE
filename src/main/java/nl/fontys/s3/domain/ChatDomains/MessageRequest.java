@@ -1,4 +1,4 @@
-package nl.fontys.s3.domain;
+package nl.fontys.s3.domain.ChatDomains;
 
 import lombok.Builder;
 import lombok.Data;
