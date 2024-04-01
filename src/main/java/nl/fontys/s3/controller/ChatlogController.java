@@ -39,7 +39,7 @@ public class ChatlogController {
     }
 
     @GetMapping("{id}")
-    public void retrieveLogs()
+    public void retrieveChat()
     {
         // retrieves chat by id
 
