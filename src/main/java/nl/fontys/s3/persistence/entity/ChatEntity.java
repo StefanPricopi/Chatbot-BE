@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -14,6 +15,8 @@ public class ChatEntity {
     private long customer_id;
     private List<MessageEntity> messages;
 
+    // Add date
+    private LocalDateTime dateTime;
     //Maybe a status?
     //Maybe a priority?
 }
