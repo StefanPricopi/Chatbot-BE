@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.security.Timestamp;
 
 @Data
 @Builder
@@ -19,10 +18,9 @@ import java.security.Timestamp;
 public class ChatbotFAQEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int FAQID;
+        private Long FAQID;
         private String question;
         private String answer;
         private String category;
-        private Timestamp dateAdded;
 
 }

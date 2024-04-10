@@ -14,6 +14,14 @@ public class CreateChatbotFAQImpl implements CreateChatbotFAQ {
     private final ChatbotFAQRepository chatbotFAQRepository;
 
 
+    @Override
+    public CreateChatbotFAQResponse createFAQ(CreateChatbotFAQRequest request) {
+        ChatbotFAQEntity savedFAQ = saveNewFAQ(request);
+
+        return CreateChatbotFAQResponse.builder()
+                .FAQID(savedFAQ.getFAQID())
+                .build();
+    }
 
     private ChatbotFAQEntity saveNewFAQ(CreateChatbotFAQRequest request){
         ChatbotFAQEntity newFAQ = ChatbotFAQEntity.builder()
@@ -22,14 +30,5 @@ public class CreateChatbotFAQImpl implements CreateChatbotFAQ {
                 .category(request.getCategory())
                 .build();
         return chatbotFAQRepository.save(newFAQ);
-    }
-
-    @Override
-    public CreateChatbotFAQResponse createFAQ(CreateChatbotFAQRequest request) {
-        ChatbotFAQEntity savedFAQ = saveNewFAQ(request);
-
-        return CreateChatbotFAQResponse.builder()
-                .FAQID(savedFAQ.getFAQID())
-                .build();
     }
 }

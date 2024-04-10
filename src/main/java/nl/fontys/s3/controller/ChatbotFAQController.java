@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/faqs")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class ChatbotFAQController {
     private final CreateChatbotFAQ createFAQ;
     private final GetChatbotFAQ getFAQs;
@@ -30,13 +31,13 @@ public class ChatbotFAQController {
     }
 
     @DeleteMapping("{faqId}")
-    public ResponseEntity<Void> deleteFAQ(@PathVariable int faqId){
+    public ResponseEntity<Void> deleteFAQ(@PathVariable Long faqId){
         deleteFAQ.deleteFAQ(faqId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{faqId}")
-    public ResponseEntity<Void> updateFAQ(@PathVariable("faqId") int faqId, @RequestBody @Valid UpdateChatbotFAQRequest request){
+    public ResponseEntity<Void> updateFAQ(@PathVariable("faqId") Long faqId, @RequestBody @Valid UpdateChatbotFAQRequest request){
         request.setFAQID(faqId);
         updateFAQ.updateChatbotFAQ(request);
         return ResponseEntity.noContent().build();
@@ -48,3 +49,4 @@ public class ChatbotFAQController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
+

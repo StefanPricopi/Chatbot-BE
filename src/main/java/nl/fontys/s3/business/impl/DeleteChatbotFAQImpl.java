@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class DeleteChatbotFAQImpl implements DeleteChatbotFAQ {
     private final ChatbotFAQRepository chatbotFAQRepository;
     @Override
-    public void deleteFAQ(int FAQId) {
+    public void deleteFAQ(Long FAQId) {
         this.chatbotFAQRepository.deleteByFAQid(FAQId);
     }
 }

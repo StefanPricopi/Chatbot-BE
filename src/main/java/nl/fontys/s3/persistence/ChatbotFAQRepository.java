@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface ChatbotFAQRepository {
     ChatbotFAQEntity save(ChatbotFAQEntity faq);
     List<ChatbotFAQEntity> findAll();
-    Optional<ChatbotFAQEntity> findById(int faqID);
-    void deleteByFAQid(int faqID);
+    Optional<ChatbotFAQEntity> findById(Long faqID);
+    void deleteByFAQid(Long faqID);
 }

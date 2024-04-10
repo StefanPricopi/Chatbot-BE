@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.security.Timestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,10 +12,9 @@ import java.security.Timestamp;
 @Builder
 public class ChatbotFAQ {
 
-        private int FAQID;
+        private Long FAQID;
         private String question;
         private String answer;
         private String category;
-        private Timestamp dateAdded;
 
 }
