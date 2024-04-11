@@ -3,15 +3,19 @@ package nl.fontys.s3.business.impl;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.UpdateChatbotFAQ;
 import nl.fontys.s3.domain.UpdateChatbotFAQRequest;
-import nl.fontys.s3.persistence.ChatbotFAQRepository;
+import nl.fontys.s3.persistence.ChatbotFAQJpaRepository;
 import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UpdateChatbotFAQImpl implements UpdateChatbotFAQ {
-    private final ChatbotFAQRepository faqRepository;
+    @Autowired
+    @Qualifier("chatbotFAQRepositoryImpl")
+    private final ChatbotFAQJpaRepository faqRepository;
 
     @Override
     public void updateChatbotFAQ(UpdateChatbotFAQRequest request) {

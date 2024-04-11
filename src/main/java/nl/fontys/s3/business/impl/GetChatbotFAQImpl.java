@@ -4,26 +4,56 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.GetChatbotFAQ;
 import nl.fontys.s3.domain.ChatbotFAQ;
 import nl.fontys.s3.domain.GetAllChatbotFAQResponse;
-import nl.fontys.s3.persistence.ChatbotFAQRepository;
+import nl.fontys.s3.persistence.ChatbotFAQJpaRepository;
 import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class GetChatbotFAQImpl implements GetChatbotFAQ {
-    private final ChatbotFAQRepository faqRepository;
+
+    @Autowired
+    @Qualifier("chatbotFAQJpaRepository")
+    private ChatbotFAQJpaRepository faqRepository;
+
+    // Keyword mapping
+    private final Map<String, List<String>> keywordMap = Map.of(
+            "reset", List.of("reset", "change", "update", "modify", "password"),
+            "change", List.of("change", "update", "modify", "password"),
+            "update", List.of("update", "modify", "password")
+            // Add more mappings as needed
+    );
+
     @Override
     public GetAllChatbotFAQResponse getFAQ() {
         List<ChatbotFAQEntity> results = faqRepository.findAll();
-
-        final GetAllChatbotFAQResponse response = new GetAllChatbotFAQResponse();
         List<ChatbotFAQ> faqs = results.stream()
                 .map(FAQConverter::convert)
-                .toList();
+                .collect(Collectors.toList());
+
+        final GetAllChatbotFAQResponse response = new GetAllChatbotFAQResponse();
         response.setChatbotFAQS(faqs);
 
         return response;
+    }
+
+    @Override
+    public List<ChatbotFAQEntity> getFAQsByKeyword(String userQuery) {
+        List<String> matchedKeywords = keywordMap.entrySet().stream()
+                .filter(entry -> entry.getValue().stream().anyMatch(userQuery::contains))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        List<String> allKeywords = matchedKeywords.stream()
+                .flatMap(keyword -> keywordMap.get(keyword).stream())
+                .collect(Collectors.toList());
+
+        return faqRepository.findByQuestionContainingIgnoreCase(userQuery);
     }
 }

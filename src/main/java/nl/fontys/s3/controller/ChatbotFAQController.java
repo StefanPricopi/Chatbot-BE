@@ -10,9 +10,12 @@ import nl.fontys.s3.domain.CreateChatbotFAQRequest;
 import nl.fontys.s3.domain.CreateChatbotFAQResponse;
 import nl.fontys.s3.domain.GetAllChatbotFAQResponse;
 import nl.fontys.s3.domain.UpdateChatbotFAQRequest;
+import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/faqs")
@@ -48,5 +51,11 @@ public class ChatbotFAQController {
         CreateChatbotFAQResponse response = createFAQ.createFAQ(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<ChatbotFAQEntity>> getFAQsByKeyword(@RequestParam String keyword) {
+        List<ChatbotFAQEntity> faqs = getFAQs.getFAQsByKeyword(keyword);
+        return ResponseEntity.ok(faqs);
+    }
+
 }
 

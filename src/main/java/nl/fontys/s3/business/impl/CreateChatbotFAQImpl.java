@@ -4,14 +4,19 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.CreateChatbotFAQ;
 import nl.fontys.s3.domain.CreateChatbotFAQRequest;
 import nl.fontys.s3.domain.CreateChatbotFAQResponse;
-import nl.fontys.s3.persistence.ChatbotFAQRepository;
+import nl.fontys.s3.persistence.ChatbotFAQJpaRepository;
 import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class CreateChatbotFAQImpl implements CreateChatbotFAQ {
-    private final ChatbotFAQRepository chatbotFAQRepository;
+    @Autowired
+    @Qualifier("chatbotFAQRepositoryImpl")
+    private ChatbotFAQJpaRepository chatbotFAQRepository;
+
 
 
     @Override
