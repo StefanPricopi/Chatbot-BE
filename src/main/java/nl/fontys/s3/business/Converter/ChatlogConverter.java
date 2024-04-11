@@ -10,6 +10,7 @@ public class ChatlogConverter {
                 .id(chatEntity.getId())
                 .customer_id(chatEntity.getCustomer_id())
                 .messages(chatEntity.getMessages())
+                .hasBeenSolved(chatEntity.isOpen())
                 .build();
     }
 }

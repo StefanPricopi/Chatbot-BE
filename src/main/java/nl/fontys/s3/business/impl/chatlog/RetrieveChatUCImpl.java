@@ -23,6 +23,7 @@ public class RetrieveChatUCImpl implements RetrieveChatUC {
                 .id(tmp.get().getId())
                 .customer_id(tmp.get().getCustomer_id())
                 .messages(tmp.get().getMessages())
+                .hasBeenSolved(tmp.get().isOpen())
                 .build();
     }
 }

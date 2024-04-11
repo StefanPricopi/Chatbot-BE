@@ -19,4 +19,5 @@ public class ChatEntity {
     private LocalDateTime dateTime;
     //Maybe a status?
     //Maybe a priority?
+    private boolean isOpen;
 }

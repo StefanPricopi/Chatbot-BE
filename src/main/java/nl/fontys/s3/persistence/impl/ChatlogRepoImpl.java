@@ -58,19 +58,115 @@ public class ChatlogRepoImpl implements ChatlogRepository {
                 .customer_id(1)
                 .id(1)
                 .messages(msgTst)
+                        .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
                 .customer_id(1)
                 .id(2)
                 .messages(msgTst)
+                        .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
                 .customer_id(3)
                 .id(3)
                 .messages(msgTst)
+                .isOpen(true)
                 .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(3)
+                .id(4)
+                .messages(msgTst)
+                .isOpen(true)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(1)
+                .id(5)
+                .messages(msgTst)
+                .isOpen(true)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(6)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(7)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(8)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(9)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(10)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(11)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(12)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(13)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(14)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(15)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+        chatEntities.add(ChatEntity.builder()
+                .customer_id(2)
+                .id(16)
+                .messages(msgTst)
+                .isOpen(false)
+                .build());
+
+
     }
 
 

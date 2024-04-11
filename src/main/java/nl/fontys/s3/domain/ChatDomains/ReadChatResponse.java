@@ -16,4 +16,6 @@ public class ReadChatResponse {
     private long customer_id;
     @NotNull
     private List<MessageEntity> messages;
+    @NotNull
+    private boolean hasBeenSolved;
 }
