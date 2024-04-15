@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import nl.fontys.s3.persistence.entity.MessageEntity;
+import nl.fontys.s3.persistence.entity.UserEntity;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class ReadChatResponse {
     @NotNull
     private long id;
     @NotNull
-    private long customer_id;
+    private UserEntity customer;
     @NotNull
     private List<MessageEntity> messages;
     @NotNull

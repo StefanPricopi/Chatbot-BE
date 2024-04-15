@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.persistence.ChatlogRepository;
 import nl.fontys.s3.persistence.entity.ChatEntity;
 import nl.fontys.s3.persistence.entity.MessageEntity;
+import nl.fontys.s3.persistence.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -54,118 +55,117 @@ public class ChatlogRepoImpl implements ChatlogRepository {
                 .message("So this is just some test data")
                 .build());
 
+        UserEntity tmpUser = UserEntity.builder()
+                .email("Test@gmail.com")
+                .role("customer service")
+                .userName("Test")
+                .password("123")
+                .build();
+
         chatEntities.add(ChatEntity.builder()
-                .customer_id(1)
+                .customer(tmpUser)
                 .id(1)
                 .messages(msgTst)
                         .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(1)
+                .customer(tmpUser)
                 .id(2)
                 .messages(msgTst)
                         .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(3)
+                .customer(tmpUser)
                 .id(3)
                 .messages(msgTst)
                 .isOpen(true)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(3)
+                .customer(tmpUser)
                 .id(4)
                 .messages(msgTst)
                 .isOpen(true)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(1)
+                .customer(tmpUser)
                 .id(5)
                 .messages(msgTst)
                 .isOpen(true)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(6)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(7)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(8)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(9)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(10)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(11)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(12)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(13)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(14)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
 
         chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
+                .customer(tmpUser)
                 .id(15)
                 .messages(msgTst)
                 .isOpen(false)
                 .build());
-
-        chatEntities.add(ChatEntity.builder()
-                .customer_id(2)
-                .id(16)
-                .messages(msgTst)
-                .isOpen(false)
-                .build());
-
 
     }
 
@@ -174,8 +174,9 @@ public class ChatlogRepoImpl implements ChatlogRepository {
     public void createChat(long customerId) {
         chatEntities.add(ChatEntity.builder()
                         // Underneath is temporary!
+                        // Need to find a solution for the customer thing.
                         .id(chatEntities.size() + 1)
-                        .customer_id(customerId)
+                        //.customer_id(customerId)
                         .messages(new ArrayList<>())
                 .build());
     }

@@ -21,7 +21,7 @@ public class RetrieveChatUCImpl implements RetrieveChatUC {
         Optional<ChatEntity> tmp = chatlogRepository.retrieveChat(id);
         return ReadChatResponse.builder()
                 .id(tmp.get().getId())
-                .customer_id(tmp.get().getCustomer_id())
+                .customer(tmp.get().getCustomer())
                 .messages(tmp.get().getMessages())
                 .hasBeenSolved(tmp.get().isOpen())
                 .build();

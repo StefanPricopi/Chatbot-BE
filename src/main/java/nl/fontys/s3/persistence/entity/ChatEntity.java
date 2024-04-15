@@ -12,7 +12,7 @@ import java.util.List;
 public class ChatEntity {
     private long id;
 
-    private long customer_id;
+    private UserEntity customer;
     private List<MessageEntity> messages;
 
     // Add date

@@ -8,7 +8,7 @@ public class ChatlogConverter {
     {
         return ReadChatResponse.builder()
                 .id(chatEntity.getId())
-                .customer_id(chatEntity.getCustomer_id())
+                .customer(chatEntity.getCustomer())
                 .messages(chatEntity.getMessages())
                 .hasBeenSolved(chatEntity.isOpen())
                 .build();
