@@ -35,7 +35,7 @@ public class ChatbotFAQController {
 
     @DeleteMapping("{faqId}")
     public ResponseEntity<Void> deleteFAQ(@PathVariable Long faqId){
-        deleteFAQ.deleteFAQ(faqId);
+        deleteFAQ.deleteFAQ(Math.toIntExact(faqId));
         return ResponseEntity.noContent().build();
     }
 

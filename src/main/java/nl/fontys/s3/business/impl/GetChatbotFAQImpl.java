@@ -44,16 +44,7 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
     }
 
     @Override
-    public List<ChatbotFAQEntity> getFAQsByKeyword(String userQuery) {
-        List<String> matchedKeywords = keywordMap.entrySet().stream()
-                .filter(entry -> entry.getValue().stream().anyMatch(userQuery::contains))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-
-        List<String> allKeywords = matchedKeywords.stream()
-                .flatMap(keyword -> keywordMap.get(keyword).stream())
-                .collect(Collectors.toList());
-
-        return faqRepository.findByQuestionContainingIgnoreCase(userQuery);
+    public List<ChatbotFAQEntity> getFAQsByKeyword(String keyword) {
+        return faqRepository.findByQuestionContainingIgnoreCase(keyword);
     }
 }
