@@ -24,7 +24,7 @@ public class CreateChatbotFAQImpl implements CreateChatbotFAQ {
         ChatbotFAQEntity savedFAQ = saveNewFAQ(request);
 
         return CreateChatbotFAQResponse.builder()
-                .FAQID(savedFAQ.getFAQID())
+                .FAQID((long) savedFAQ.getFAQID())
                 .build();
     }
 

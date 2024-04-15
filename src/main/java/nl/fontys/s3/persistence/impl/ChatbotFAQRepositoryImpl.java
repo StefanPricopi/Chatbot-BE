@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 @Repository
-
 public abstract class  ChatbotFAQRepositoryImpl implements ChatbotFAQJpaRepository {
 
     private final ChatbotFAQJpaRepository repository;

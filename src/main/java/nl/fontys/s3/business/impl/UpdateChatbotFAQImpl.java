@@ -19,7 +19,7 @@ public class UpdateChatbotFAQImpl implements UpdateChatbotFAQ {
 
     @Override
     public void updateChatbotFAQ(UpdateChatbotFAQRequest request) {
-        Optional<ChatbotFAQEntity> faqOptional = faqRepository.findById(request.getFAQID());
+        Optional<ChatbotFAQEntity> faqOptional = faqRepository.findById(Math.toIntExact(request.getFAQID()));
         if (faqOptional.isPresent()) {
             ChatbotFAQEntity faq = faqOptional.get();
             updateFields(request, faq);

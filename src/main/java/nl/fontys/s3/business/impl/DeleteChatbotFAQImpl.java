@@ -13,7 +13,9 @@ public class DeleteChatbotFAQImpl implements DeleteChatbotFAQ {
     @Autowired
     @Qualifier("chatbotFAQRepositoryImpl")
     private final ChatbotFAQJpaRepository chatbotFAQRepository;
-    public void deleteFAQ(int faqId) {
-        chatbotFAQRepository.deleteById(faqId);
+
+    @Override
+    public void deleteFAQ(Long FAQId) {
+        chatbotFAQRepository.deleteById(Math.toIntExact(FAQId));
     }
 }
