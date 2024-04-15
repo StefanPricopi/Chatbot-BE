@@ -176,7 +176,7 @@ public class ChatlogRepoImpl implements ChatlogRepository {
                         // Underneath is temporary!
                         // Need to find a solution for the customer thing.
                         .id(chatEntities.size() + 1)
-                        //.customer_id(customerId)
+                        //.customer_id(customerId)s
                         .messages(new ArrayList<>())
                 .build());
     }
