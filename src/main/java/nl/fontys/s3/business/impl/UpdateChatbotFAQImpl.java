@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UpdateChatbotFAQImpl implements UpdateChatbotFAQ {
-    @Autowired
+    //@Autowired
     @Qualifier("chatbotFAQRepositoryImpl")
     private final ChatbotFAQJpaRepository faqRepository;
 

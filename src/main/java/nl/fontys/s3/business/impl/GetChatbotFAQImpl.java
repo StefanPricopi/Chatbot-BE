@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class GetChatbotFAQImpl implements GetChatbotFAQ {
 
-    @Autowired
+    //@Autowired
     @Qualifier("chatbotFAQJpaRepository")
     private ChatbotFAQJpaRepository faqRepository;
 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class CreateChatbotFAQImpl implements CreateChatbotFAQ {
-    @Autowired
+    //@Autowired
     @Qualifier("chatbotFAQRepositoryImpl")
     private ChatbotFAQJpaRepository chatbotFAQRepository;
 
