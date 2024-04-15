@@ -1,12 +1,12 @@
 spring:
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://hera.fontysict.net:3306/i451040_basworlddb
-    username: i451040_BasWorldDB
-    password: YWcjMzJLmNcD48gFmF6e
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://mssqlstud.fhict.local:1433;databaseName=dbi451040_hhh
+    username: dbi451040_hhh
+    password: 1234
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.SQLServerDialect
     hibernate:
       ddl-auto: none
