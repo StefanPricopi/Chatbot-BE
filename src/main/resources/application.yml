@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mysql://hera.fontysict.net:3306/i451040_basworlddb
+    username: i451040_BasWorldDB
+    password: YWcjMzJLmNcD48gFmF6e
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: update
