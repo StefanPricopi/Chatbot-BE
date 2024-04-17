@@ -31,4 +31,10 @@ public class ChatbotFAQEntity {
         @ManyToOne
         private UserEntity user;
 
+        public ChatbotFAQEntity(String question, String answer, String category, Timestamp dateAdded) {
+                this.question = question;
+                this.answer = answer;
+                this.category = category;
+                this.dateAdded = dateAdded;
+        }
 }

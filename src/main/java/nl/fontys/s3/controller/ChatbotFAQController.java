@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/faqs")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5175")
 public class ChatbotFAQController {
     private final CreateChatbotFAQ createFAQ;
     private final GetChatbotFAQ getFAQs;
@@ -30,6 +30,10 @@ public class ChatbotFAQController {
     @GetMapping()
     public ResponseEntity<GetAllChatbotFAQResponse> getAllFAQs(){
         GetAllChatbotFAQResponse response = getFAQs.getFAQ();
+        for (int i = 0 ;i<response.getChatbotFAQS().size();i++)
+        {
+            System.out.println(response.getChatbotFAQS().get(i));
+        }
         return ResponseEntity.ok(response);
     }
 
