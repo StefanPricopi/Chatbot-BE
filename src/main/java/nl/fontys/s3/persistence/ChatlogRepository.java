@@ -2,13 +2,14 @@ package nl.fontys.s3.persistence;
 
 import nl.fontys.s3.persistence.entity.ChatEntity;
 import nl.fontys.s3.persistence.entity.MessageEntity;
+import nl.fontys.s3.persistence.entity.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ChatlogRepository {
 
-    void createChat(long customerId);
+    void createChat(UserEntity user);
 
     void logChat(long chatId, MessageEntity msg);
 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class CreateChatbotFAQImpl implements CreateChatbotFAQ {
-    @Autowired
+    //@Autowired
     @Qualifier("chatbotFAQRepositoryImpl")
     private ChatbotFAQJpaRepository chatbotFAQRepository;
 
@@ -24,7 +24,7 @@ public class CreateChatbotFAQImpl implements CreateChatbotFAQ {
         ChatbotFAQEntity savedFAQ = saveNewFAQ(request);
 
         return CreateChatbotFAQResponse.builder()
-                .FAQID(savedFAQ.getFAQID())
+                .FAQID((long) savedFAQ.getFAQID())
                 .build();
     }
 

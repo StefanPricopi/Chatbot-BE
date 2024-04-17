@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class DeleteChatbotFAQImpl implements DeleteChatbotFAQ {
-    @Autowired
+    //@Autowired
     @Qualifier("chatbotFAQRepositoryImpl")
     private final ChatbotFAQJpaRepository chatbotFAQRepository;
-    public void deleteFAQ(int faqId) {
-        chatbotFAQRepository.deleteById(faqId);
+
+    public void deleteFAQ(Integer FAQId) {
+        chatbotFAQRepository.deleteById(FAQId);
     }
 }

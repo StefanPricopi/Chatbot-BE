@@ -171,12 +171,11 @@ public class ChatlogRepoImpl implements ChatlogRepository {
 
 
     @Override
-    public void createChat(long customerId) {
+    public void createChat(UserEntity user) {
         chatEntities.add(ChatEntity.builder()
                         // Underneath is temporary!
-                        // Need to find a solution for the customer thing.
                         .id(chatEntities.size() + 1)
-                        //.customer_id(customerId)s
+                        .customer(user)
                         .messages(new ArrayList<>())
                 .build());
     }
