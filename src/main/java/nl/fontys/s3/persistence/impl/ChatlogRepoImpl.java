@@ -1,6 +1,7 @@
 package nl.fontys.s3.persistence.impl;
 
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.domain.ChatDomains.SendByDTO;
 import nl.fontys.s3.persistence.ChatlogRepository;
 import nl.fontys.s3.persistence.entity.ChatEntity;
 import nl.fontys.s3.persistence.entity.MessageEntity;
@@ -36,23 +37,39 @@ public class ChatlogRepoImpl implements ChatlogRepository {
 
     private void demoData()
     {
+        SendByDTO tempCustomer = SendByDTO.builder()
+                .userId(1L)
+                .userName("Demo Customer")
+                .role("Customer")
+                .email("DemoCustomer@gmail.com")
+                .build();
+
+        SendByDTO tempBot = SendByDTO.builder()
+                .userId(2L)
+                .userName("Demo BOT RESP")
+                .role("Customer Service")
+                .email("TestCS@gmail.com")
+                .build();
+
+
+
         List<MessageEntity> msgTst = new ArrayList<>();
         msgTst.add(MessageEntity.builder()
-                .user_id(1)
+                .sendBy(tempCustomer)
                 .message_id(1)
-                .message("Hello World")
+                .message("Need some help Demo")
                 .build());
 
         msgTst.add(MessageEntity.builder()
-                .user_id(2)
+                .sendBy(tempBot)
                 .message_id(2)
-                .message("Hello world back to you chief!")
+                .message("What can I help you with?")
                 .build());
 
         msgTst.add(MessageEntity.builder()
-                .user_id(1)
+                .sendBy(tempCustomer)
                 .message_id(3)
-                .message("So this is just some test data")
+                .message("No clue, just need to see if this works!")
                 .build());
 
         UserEntity tmpUser = UserEntity.builder()
