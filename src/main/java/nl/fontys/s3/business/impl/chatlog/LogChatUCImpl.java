@@ -17,7 +17,7 @@ public class LogChatUCImpl implements LogChatUC {
     public void logChat(long chat_id, MessageRequest msg) {
 
         chatlogRepository.logChat(chat_id, MessageEntity.builder()
-                        .user_id(msg.getUser_id())
+                        .sendBy(msg.getSendBy())
                         .message(msg.getMessage())
                 .build());
     }

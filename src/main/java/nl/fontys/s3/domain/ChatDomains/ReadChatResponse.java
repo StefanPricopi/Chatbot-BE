@@ -14,7 +14,7 @@ public class ReadChatResponse {
     @NotNull
     private long id;
     @NotNull
-    private UserEntity customer;
+    private SendByDTO sendBy;
     @NotNull
     private List<MessageEntity> messages;
     @NotNull
