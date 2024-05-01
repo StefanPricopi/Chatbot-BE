@@ -9,5 +9,6 @@ import java.util.List;
 public interface GetChatbotFAQ {
     GetAllChatbotFAQResponse getFAQ();
      List<ChatbotFAQEntity> getFAQsByKeyword(String keyword);
+    public String processUserQuery(String userInput);
 
 }

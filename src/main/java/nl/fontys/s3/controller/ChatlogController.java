@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/chat")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 public class ChatlogController {
 
     private CreateChatUC createChatUC;

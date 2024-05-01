@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/faqs")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5175")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ChatbotFAQController {
     private final CreateChatbotFAQ createFAQ;
     private final GetChatbotFAQ getFAQs;
@@ -55,11 +55,13 @@ public class ChatbotFAQController {
         CreateChatbotFAQResponse response = createFAQ.createFAQ(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    @GetMapping("/search")
-    public ResponseEntity<List<ChatbotFAQEntity>> getFAQsByKeyword(@RequestParam String keyword) {
-        List<ChatbotFAQEntity> faqs = getFAQs.getFAQsByKeyword(keyword);
-        return ResponseEntity.ok(faqs);
+
+    @PostMapping("/getChatbotResponse")
+    public String getChatbotResponse(@RequestBody String message) {
+        String response = getFAQs.processUserQuery(message);
+        return response != null ? response : "I'm sorry, I couldn't find an answer to your question.";
     }
+
 
 }
 
