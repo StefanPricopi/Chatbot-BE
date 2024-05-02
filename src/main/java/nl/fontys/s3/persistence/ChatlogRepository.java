@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ChatlogRepository {
 
-    void createChat(UserEntity user);
+    Long createChat(UserEntity user);
 
     void logChat(long chatId, MessageEntity msg);
 

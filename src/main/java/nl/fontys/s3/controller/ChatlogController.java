@@ -3,9 +3,7 @@ package nl.fontys.s3.controller;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.ChatLogPck.*;
-import nl.fontys.s3.domain.ChatDomains.AddMsgToChatRequest;
-import nl.fontys.s3.domain.ChatDomains.GetAllChatsResponse;
-import nl.fontys.s3.domain.ChatDomains.ReadChatResponse;
+import nl.fontys.s3.domain.ChatDomains.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +22,7 @@ public class ChatlogController {
 
 
     @PostMapping("/newchat")
-    public ResponseEntity<String> createChatLog()
+    public ResponseEntity<CreateChatResponse> createChatLog(@RequestBody CreateChatRequest chatRequest)
     {
         // Snap, how will I do this correctly...
 
@@ -32,7 +30,7 @@ public class ChatlogController {
         try
         {
             createChatUC.createChat(1);
-            return ResponseEntity.ok().body("Chat has been created/opened");
+            return ResponseEntity.ok().body(createChatUC.createChat(chatRequest.getUser().getUserId()));
         }
         catch(Exception e)
         {

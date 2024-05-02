@@ -2,6 +2,7 @@ package nl.fontys.s3.business.impl.chatlog;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.ChatLogPck.CreateChatUC;
+import nl.fontys.s3.domain.ChatDomains.CreateChatResponse;
 import nl.fontys.s3.persistence.ChatlogRepository;
 import nl.fontys.s3.persistence.UserRepository;
 import nl.fontys.s3.persistence.entity.UserEntity;
@@ -19,9 +20,13 @@ public class CreateChatUCImpl implements CreateChatUC {
 
 
     @Override
-    public void createChat(long customerId) {
+    public CreateChatResponse createChat(long customerId) {
         // create new chat entity.
         Optional<UserEntity> customer = userRepository.findById(customerId);
-        chatlogRepository.createChat(customer.get());
+        Long id = chatlogRepository.createChat(customer.get());
+
+        return CreateChatResponse.builder()
+                .chat_id(id)
+                .build();
     }
 }

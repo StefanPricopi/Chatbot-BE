@@ -1,5 +1,7 @@
 package nl.fontys.s3.business.ChatLogPck;
 
+import nl.fontys.s3.domain.ChatDomains.CreateChatResponse;
+
 public interface CreateChatUC {
-    void createChat(long customerId);
+    CreateChatResponse createChat(long customerId);
 }
