@@ -22,19 +22,23 @@ public class ChatlogController {
 
 
     @PostMapping("/newchat")
-    public ResponseEntity<CreateChatResponse> createChatLog(@RequestBody CreateChatRequest chatRequest)
+    public ResponseEntity<CreateChatResponse> createChatLog(@RequestBody MessageRequest chatRequest)
     {
         // Snap, how will I do this correctly...
 
         //Example
         try
         {
-            createChatUC.createChat(1);
-            return ResponseEntity.ok().body(createChatUC.createChat(chatRequest.getUser().getUserId()));
+            CreateChatResponse chat = createChatUC.createChat(chatRequest.getSendBy().getUserId(), chatRequest);
+
+
+            System.out.println("So fires here: " + chat.getChat_id());
+            return ResponseEntity.ok().body(chat);
         }
         catch(Exception e)
         {
-            return ResponseEntity.internalServerError().build();
+            System.out.println("user with id doesn't exist");
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -46,10 +50,12 @@ public class ChatlogController {
         try
         {
             logChatUC.logChat(request.getChat_id(), request.getMessage());
-            return ResponseEntity.ok().body("");
+            System.out.println("\n\n\n\n So it receives a message. \n\n\n" + request.getChat_id() + "  " + request.getMessage());
+            return ResponseEntity.ok().body("added chatlog");
         }
         catch(Exception e)
         {
+            System.out.println("Something went wrong and i'm nut exactlysure what. " +  e.getMessage());
             return ResponseEntity.internalServerError().body("Error " + e.getMessage());
         }
 
@@ -80,7 +86,7 @@ public class ChatlogController {
         }
         catch(Exception e)
         {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.notFound().build();
         }
 
     }

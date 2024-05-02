@@ -29,7 +29,7 @@ public class RetrieveChatUCImpl implements RetrieveChatUC {
 
         return ReadChatResponse.builder()
                 .id(tmp.get().getId())
-                .sendBy(tempSend)
+                .createdBy(tempSend)
                 .messages(tmp.get().getMessages())
                 .hasBeenSolved(tmp.get().isOpen())
                 .build();
