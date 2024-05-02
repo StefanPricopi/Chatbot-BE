@@ -17,7 +17,7 @@ public class ChatlogConverter {
 
         return ReadChatResponse.builder()
                 .id(chatEntity.getId())
-                .sendBy(temp)
+                .createdBy(temp)
                 .messages(chatEntity.getMessages())
                 .hasBeenSolved(chatEntity.isOpen())
                 .build();
