@@ -1,4 +1,4 @@
-package nl.fontys.s3.domain;
+package nl.fontys.s3.domain.chatbotFAQ;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserResponse {
-    private Long userId;
+public class CreateChatbotFAQResponse {
+    private Long FAQID;
 }

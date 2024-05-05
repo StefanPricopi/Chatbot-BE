@@ -1,7 +1,7 @@
 package nl.fontys.s3.business.impl;
 
 import nl.fontys.s3.domain.ChatbotFAQ;
-import nl.fontys.s3.domain.User;
+import nl.fontys.s3.domain.users.User;
 import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
 import nl.fontys.s3.persistence.entity.UserEntity;
 

@@ -43,4 +43,11 @@ public class UserRepositoryImpl implements UserRepository {
                 .filter(userEntity -> userEntity.getUserId().equals(userId))
                 .findFirst();
     }
+
+    @Override
+    public Optional<UserEntity> findByUsername(String username){
+        return this.savedUsers.stream()
+                .filter(userEntity -> userEntity.getUsername().equals(username))
+                .findFirst();
+    }
 }

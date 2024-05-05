@@ -8,15 +8,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserRequest {
+@AllArgsConstructor
+public class LoginRequest {
     @NotBlank
-    private String userName;
+    private String username;
     @NotBlank
     private String password;
-    @NotBlank
-    private String email;
-    @NotBlank
-    private String role;
 }

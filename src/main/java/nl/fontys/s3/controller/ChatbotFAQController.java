@@ -6,16 +6,13 @@ import nl.fontys.s3.business.CreateChatbotFAQ;
 import nl.fontys.s3.business.DeleteChatbotFAQ;
 import nl.fontys.s3.business.GetChatbotFAQ;
 import nl.fontys.s3.business.UpdateChatbotFAQ;
-import nl.fontys.s3.domain.CreateChatbotFAQRequest;
-import nl.fontys.s3.domain.CreateChatbotFAQResponse;
-import nl.fontys.s3.domain.GetAllChatbotFAQResponse;
-import nl.fontys.s3.domain.UpdateChatbotFAQRequest;
-import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
+import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQRequest;
+import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQResponse;
+import nl.fontys.s3.domain.chatbotFAQ.GetAllChatbotFAQResponse;
+import nl.fontys.s3.domain.chatbotFAQ.UpdateChatbotFAQRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/faqs")

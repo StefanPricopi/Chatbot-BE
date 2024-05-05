@@ -8,9 +8,7 @@ import nl.fontys.s3.persistence.entity.MessageEntity;
 import nl.fontys.s3.persistence.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ChatlogRepoImpl implements ChatlogRepository {
@@ -37,17 +35,22 @@ public class ChatlogRepoImpl implements ChatlogRepository {
 
     private void demoData()
     {
+        Set<String> customerRoles = new HashSet<>();
+        customerRoles.add("CUSTOMER");
+        Set<String> customerServiceRoles = new HashSet<>();
+        customerRoles.add("CUSTOMER_SERVICE");
+
         SendByDTO tempCustomer = SendByDTO.builder()
                 .userId(1L)
-                .userName("Demo Customer")
-                .role("Customer")
+                .username("Demo Customer")
+                .roles(customerRoles)
                 .email("DemoCustomer@gmail.com")
                 .build();
 
         SendByDTO tempBot = SendByDTO.builder()
                 .userId(2L)
-                .userName("Demo BOT RESP")
-                .role("Customer Service")
+                .username("Demo BOT RESP")
+                .roles(customerServiceRoles)
                 .email("TestCS@gmail.com")
                 .build();
 
@@ -74,8 +77,8 @@ public class ChatlogRepoImpl implements ChatlogRepository {
 
         UserEntity tmpUser = UserEntity.builder()
                 .email("Test@gmail.com")
-                .role("customer service")
-                .userName("Test")
+                .roles(customerServiceRoles)
+                .username("Test")
                 .password("123")
                 .build();
 

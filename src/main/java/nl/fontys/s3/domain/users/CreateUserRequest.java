@@ -1,4 +1,4 @@
-package nl.fontys.s3.domain;
+package nl.fontys.s3.domain.users;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -6,15 +6,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateChatbotFAQRequest {
+public class CreateUserRequest {
     @NotBlank
-    private String question;
+    private String username;
     @NotBlank
-    private String answer;
+    private String password;
     @NotBlank
-    private String category;
+    private String email;
+    private Set<String> roles;;
 }

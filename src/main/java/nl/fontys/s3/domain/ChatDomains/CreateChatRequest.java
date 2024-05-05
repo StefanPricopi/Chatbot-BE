@@ -1,10 +1,9 @@
 package nl.fontys.s3.domain.ChatDomains;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
-import nl.fontys.s3.domain.User;
+import nl.fontys.s3.domain.users.User;
 
 @Data
 @Builder

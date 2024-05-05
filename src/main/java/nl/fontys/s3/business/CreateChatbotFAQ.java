@@ -1,7 +1,7 @@
 package nl.fontys.s3.business;
 
-import nl.fontys.s3.domain.CreateChatbotFAQRequest;
-import nl.fontys.s3.domain.CreateChatbotFAQResponse;
+import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQRequest;
+import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQResponse;
 
 
 public interface CreateChatbotFAQ {

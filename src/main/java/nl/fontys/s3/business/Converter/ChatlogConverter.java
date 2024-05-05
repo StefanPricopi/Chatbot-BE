@@ -9,9 +9,8 @@ public class ChatlogConverter {
     {
         SendByDTO temp = SendByDTO.builder()
                 .userId(chatEntity.getCustomer().getUserId())
-                .userName(chatEntity.getCustomer().getUserName())
                 .email(chatEntity.getCustomer().getEmail())
-                .role(chatEntity.getCustomer().getRole())
+                .roles(chatEntity.getCustomer().getRoles())
                 .build();
 
 
