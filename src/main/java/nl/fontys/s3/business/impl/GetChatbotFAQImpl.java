@@ -3,15 +3,15 @@ package nl.fontys.s3.business.impl;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.GetChatbotFAQ;
-import nl.fontys.s3.business.impl.FAQConverter;
-import nl.fontys.s3.business.impl.KeywordMapGenerator;
 import nl.fontys.s3.domain.ChatbotFAQ;
 import nl.fontys.s3.domain.GetAllChatbotFAQResponse;
 import nl.fontys.s3.persistence.ChatbotFAQJpaRepository;
 import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,9 +26,15 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
 
     @PostConstruct
     public void init() {
-        // Generate keyword map and weights dynamically during initialization
         keywordMap = keywordMapGenerator.generateKeywordMapFromDatabase();
-        keywordWeights = loadKeywordWeights(); // Assuming you have a method to load weights from configuration or database
+        keywordWeights = keywordMapGenerator.generateWordWeightsFromDatabase();
+        System.out.println("Keyword maps initialized successfully");
+    }
+
+    @Autowired
+    public GetChatbotFAQImpl(ChatbotFAQJpaRepository faqRepository, KeywordMapGenerator keywordMapGenerator) {
+        this.faqRepository = faqRepository;
+        this.keywordMapGenerator = keywordMapGenerator;
     }
 
     @Override
@@ -38,16 +44,42 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
                 .map(FAQConverter::convert)
                 .collect(Collectors.toList());
 
-        final GetAllChatbotFAQResponse response = new GetAllChatbotFAQResponse();
+        GetAllChatbotFAQResponse response = new GetAllChatbotFAQResponse();
         response.setChatbotFAQS(faqs);
 
+        System.out.println("Retrieved " + faqs.size() + " FAQs from the database");
+
+        keywordMap.forEach((category, keywords) -> {
+            faqs.stream()
+                    .filter(faq -> faq.getCategory().equals(category))
+                    .forEach(faq -> {
+                        System.out.println("Category: " + category);
+                        System.out.println("Question: " + faq.getQuestion());
+                        System.out.println("Keywords: " + keywords);
+                    });
+        });
+
         return response;
+    }
+
+    @Override
+    public List<ChatbotFAQEntity> getFAQsByKeyword(String keyword) {
+        // Implementation goes here
+        return null;
     }
 
     @Override
     public String processUserQuery(String userInput) {
         // Preprocess user input (optional)
         String processedInput = userInput.toLowerCase();
+
+        // Calculate the best matching FAQ for the processed input
+        return calculateBestMatchingFAQ(processedInput);
+    }
+
+    private String calculateBestMatchingFAQ(String input) {
+        // Preprocess user input (optional)
+        String processedInput = input.toLowerCase();
 
         // Track the FAQ with the maximum matching score
         ChatbotFAQEntity maxMatchedFAQ = null;
@@ -59,7 +91,10 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
         // Iterate through all FAQs
         for (ChatbotFAQEntity faq : allFaqs) {
             // Calculate matching score for the current FAQ
-            int matchingScore = calculateMatchingScoreWithWeights(processedInput, faq.getQuestion());
+            int matchingScore = calculateMatchingScore(processedInput, faq.getQuestion());
+
+            // Log the matching score for the current FAQ
+            System.out.println("Matching score for FAQ '" + faq.getQuestion() + "' is: " + matchingScore);
 
             // Update maxMatchedFAQ if the current FAQ has a higher matching score
             if (matchingScore > maxMatchingScore) {
@@ -68,7 +103,7 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
             }
         }
 
-        // If a FAQ with matching keywords is found, return its answer
+        // If a FAQ with matching keywords is found
         if (maxMatchedFAQ != null) {
             return maxMatchedFAQ.getAnswer();
         }
@@ -76,53 +111,15 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
         return "Sorry, I couldn't find an answer to your question.";
     }
 
+    private int calculateMatchingScore(String input, String question) {
+        List<String> userKeywords = keywordMapGenerator.extractKeywords(input);
+        List<String> faqKeywords = keywordMapGenerator.extractKeywords(question);
 
+        // Calculate the intersection of keywords between user query and FAQ
+        userKeywords.retainAll(faqKeywords);
 
-    // Method to check if the input contains any of the specified keywords
-    private boolean containsAnyKeyword(String input, List<String> keywords) {
-        for (String keyword : keywords) {
-            if (input.contains(keyword)) {
-                return true;
-            }
-        }
-        return false;
+        // The matching score is the size of the intersection
+        return userKeywords.size();
     }
 
-    // Method to retrieve FAQs containing a specific keyword
-    public List<ChatbotFAQEntity> getFAQsByKeyword(String keyword) {
-        return faqRepository.findByQuestionContainingIgnoreCase(keyword);
-    }
-
-    // Method to calculate matching score with keyword weights
-    private int calculateMatchingScoreWithWeights(String input, String question) {
-        int score = 0;
-        String[] tokens = question.toLowerCase().split("\\s+");
-        Set<String> processedKeywords = new HashSet<>();
-
-        // Check for presence of keywords in the input and calculate score
-        for (String token : tokens) {
-            if (input.contains(token) && !processedKeywords.contains(token)) {
-                processedKeywords.add(token); // Add processed keyword to set
-                int keywordWeight = keywordWeights.getOrDefault(token, 1);
-                score += keywordWeight;
-            }
-        }
-
-        return score;
-    }
-    // Method to load keyword weights (e.g., from configuration or database)
-    private Map<String, Integer> loadKeywordWeights() {
-        Map<String, Integer> weights = new HashMap<>();
-        weights.put("password", 50);
-        weights.put("create", 4);
-        weights.put("cmr", 50);
-        weights.put("cancel", 4);
-        weights.put("active", 4);
-        weights.put("damage", 3);
-        weights.put("vehicle", 3);
-        weights.put("pick", 3);
-        weights.put("bid", 4);
-        // Load more weights as needed
-        return weights;
-    }
 }
