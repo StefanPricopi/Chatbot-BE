@@ -7,6 +7,8 @@ import nl.fontys.s3.domain.ChatDomains.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/chat")
@@ -29,6 +31,19 @@ public class ChatlogController {
         //Example
         try
         {
+            System.out.println(chatRequest.getSendBy().getRoles());
+
+            SendByDTO tmpSend = SendByDTO.builder()
+                    .roles(Set.of(chatRequest.getSendBy().getRoles().toString()))
+                    .build();
+
+            MessageRequest temp = MessageRequest.builder()
+                    .message(chatRequest.getMessage())
+                    .dateTime(chatRequest.getDateTime())
+                    .sendBy(tmpSend)
+                    .build();
+
+
             CreateChatResponse chat = createChatUC.createChat(chatRequest.getSendBy().getUserId(), chatRequest);
 
 

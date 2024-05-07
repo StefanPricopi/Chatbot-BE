@@ -12,5 +12,5 @@ public class SendByDTO {
     private Long userId;
     private String username;
     private String email;
-    private Set<String> roles;;
+    private Set<String> roles;
 }
