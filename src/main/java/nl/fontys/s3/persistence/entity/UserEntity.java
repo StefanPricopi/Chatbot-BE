@@ -1,18 +1,18 @@
 package nl.fontys.s3.persistence.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @Builder
+@Table (name = "user_entity")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +23,14 @@ public class UserEntity {
     private String username;
     private String password;
     private String email;
-    private Set<String> roles;;
+    private String roles; // Store roles as a concatenated string
 
+    public Set<String> getRolesSet() {
+        if (roles == null || roles.isEmpty()) {
+            return new HashSet<>();
+        }
+        return new HashSet<>(Arrays.asList(roles.split(",")));
+    }
+
+    public void setRolesSet(Set<String> rolesSet) { this.roles = String.join(",", rolesSet).toUpperCase();}
 }

@@ -31,16 +31,15 @@ public class CreateUserImpl implements CreateUser {
     private UserEntity saveNewUser (CreateUserRequest request){
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
-        Set<String> roles = new HashSet<>();
-        roles.add("CUSTOMER");
+//        Set<String> roles = new HashSet<>();
+//        roles.add("CUSTOMER");
 
         UserEntity newUser = UserEntity.builder()
                 .username(request.getUsername())
                 .password(encodedPassword)
                 .email(request.getEmail())
-//                .role(request.getRole())      //Usually this should be request.getRole() and the role should be set when creating account but for testing purposes, the standard role is CUSTOMER.
-                .roles(roles)
                 .build();
+        newUser.setRolesSet(request.getRoles());
         return userRepository.save(newUser);
     }
 }

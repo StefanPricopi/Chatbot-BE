@@ -24,7 +24,7 @@ public class RetrieveChatUCImpl implements RetrieveChatUC {
                 .userId(tmp.get().getCustomer().getUserId())
                 .username(tmp.get().getCustomer().getUsername())
                 .email(tmp.get().getCustomer().getEmail())
-                .roles(tmp.get().getCustomer().getRoles())
+                .roles(tmp.get().getCustomer().getRolesSet())
                 .build();
 
         return ReadChatResponse.builder()
