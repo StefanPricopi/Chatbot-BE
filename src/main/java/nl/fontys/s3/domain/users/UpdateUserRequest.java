@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class UpdateUserRequest {
-    private Long userId;
+    private Long userid;
     @NotBlank
     private String username;
     @NotBlank
