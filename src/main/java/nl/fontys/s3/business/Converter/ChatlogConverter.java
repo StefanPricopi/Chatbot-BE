@@ -8,7 +8,7 @@ public class ChatlogConverter {
     public static ReadChatResponse chatConverter(ChatEntity chatEntity)
     {
         SendByDTO temp = SendByDTO.builder()
-                .userId(chatEntity.getCustomer().getUserId())
+                .userId(chatEntity.getCustomer().getUserid())
                 .email(chatEntity.getCustomer().getEmail())
                 .roles(chatEntity.getCustomer().getRolesSet())
                 .build();

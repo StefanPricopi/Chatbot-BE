@@ -23,7 +23,7 @@ public class CreateUserImpl implements CreateUser {
         UserEntity savedUser = saveNewUser(request);
 
         return CreateUserResponse.builder()
-                .userId(savedUser.getUserId())
+                .userId(savedUser.getUserid())
                 .build();
     }
 

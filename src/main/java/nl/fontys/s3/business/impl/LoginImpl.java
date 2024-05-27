@@ -43,7 +43,7 @@ public class LoginImpl implements Login {
     private String generateAccessToken(UserEntity user){
 
         return accessTokenEncoder.encode(
-                new AccessTokenImpl(user.getUsername(), user.getUserId(), user.getRolesSet().stream().toList()));
+                new AccessTokenImpl(user.getUsername(), user.getUserid(), user.getRolesSet().stream().toList()));
     }
 
 
