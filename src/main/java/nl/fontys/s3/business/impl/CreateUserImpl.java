@@ -9,9 +9,6 @@ import nl.fontys.s3.persistence.entity.UserEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Service
 @AllArgsConstructor
 public class CreateUserImpl implements CreateUser {
@@ -23,7 +20,7 @@ public class CreateUserImpl implements CreateUser {
         UserEntity savedUser = saveNewUser(request);
 
         return CreateUserResponse.builder()
-                .userId(savedUser.getUserId())
+                .userId(savedUser.getUserid())
                 .build();
     }
 

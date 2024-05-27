@@ -23,7 +23,7 @@ public class FAQConverter {
             return null;
         }
         return User.builder()
-                .userId(userEntity.getUserId())
+                .userId(userEntity.getUserid())
                 .build();
     }
 }

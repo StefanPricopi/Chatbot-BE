@@ -76,6 +76,7 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
 
 
 
+
     // Method to check if the input contains any of the specified keywords
     private boolean containsAnyKeyword(String input, List<String> keywords) {
         for (String keyword : keywords) {
@@ -123,4 +124,10 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
         // Load more weights as needed
         return weights;
     }
+
+    @Override
+    public Map<String, List<String>> getKeywordMap() {
+        return keywordMap;
+    }
+
 }

@@ -21,7 +21,7 @@ public class RetrieveChatUCImpl implements RetrieveChatUC {
 
         Optional<ChatEntity> tmp = chatlogRepository.retrieveChat(id);
         SendByDTO tempSend = SendByDTO.builder()
-                .userId(tmp.get().getCustomer().getUserId())
+                .userId(tmp.get().getCustomer().getUserid())
                 .username(tmp.get().getCustomer().getUsername())
                 .email(tmp.get().getCustomer().getEmail())
                 .roles(tmp.get().getCustomer().getRolesSet())
