@@ -24,4 +24,4 @@ public class LoginController {
         LoginResponse loginResponse = login.login(loginRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
     }
-}
+} 

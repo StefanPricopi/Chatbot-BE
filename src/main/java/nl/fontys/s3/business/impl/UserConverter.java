@@ -8,11 +8,11 @@ import nl.fontys.s3.persistence.entity.UserEntity;
 public class UserConverter {
     public static User convert(UserEntity user){
         return User.builder()
-                .userId(user.getUserId())
+                .userId(user.getUserid())
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .email(user.getEmail())
-                .roles(user.getRoles())
+                .roles(user.getRolesSet())
                 .build();
     }
 }

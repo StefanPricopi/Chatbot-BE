@@ -78,7 +78,7 @@ public class ChatlogRepoImpl implements ChatlogRepository {
 
         UserEntity tmpUser = UserEntity.builder()
                 .email("Test@gmail.com")
-                .roles(customerServiceRoles)
+                .roles(customerServiceRoles.toString())
                 .username("Test")
                 .password("123")
                 .build();

@@ -25,7 +25,7 @@ public class UpdateUserImpl implements UpdateUser {
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
         user.setEmail(request.getEmail());
-        user.setRoles(request.getRoles());
+        user.setRolesSet(request.getRoles());
         userRepository.save(user);
     }
 }

@@ -19,5 +19,5 @@ public class CreateUserRequest {
     private String password;
     @NotBlank
     private String email;
-    private Set<String> roles;;
+    private Set<String> roles;
 }

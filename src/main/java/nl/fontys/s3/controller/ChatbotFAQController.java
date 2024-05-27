@@ -6,6 +6,8 @@ import nl.fontys.s3.business.CreateChatbotFAQ;
 import nl.fontys.s3.business.DeleteChatbotFAQ;
 import nl.fontys.s3.business.GetChatbotFAQ;
 import nl.fontys.s3.business.UpdateChatbotFAQ;
+import nl.fontys.s3.business.impl.CalculateFAQStatistics;
+import nl.fontys.s3.domain.FAQStatistics;
 import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQRequest;
 import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQResponse;
 import nl.fontys.s3.domain.chatbotFAQ.GetAllChatbotFAQResponse;
@@ -13,6 +15,8 @@ import nl.fontys.s3.domain.chatbotFAQ.UpdateChatbotFAQRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/faqs")
@@ -23,6 +27,7 @@ public class ChatbotFAQController {
     private final GetChatbotFAQ getFAQs;
     private final DeleteChatbotFAQ deleteFAQ;
     private final UpdateChatbotFAQ updateFAQ;
+    private final CalculateFAQStatistics calculateFAQStatistics;
 
     @GetMapping()
     public ResponseEntity<GetAllChatbotFAQResponse> getAllFAQs(){
@@ -32,6 +37,18 @@ public class ChatbotFAQController {
             System.out.println(response.getChatbotFAQS().get(i));
         }
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/outOfOfficeChats")
+    public int getOutOfOfficeChats() {
+        return calculateFAQStatistics.calculateOutOfOfficeChats();
+    }
+
+
+    @GetMapping("/statistics")
+    public List<FAQStatistics> getFAQStatistics() {
+        // Get top 10 most asked FAQs
+        return calculateFAQStatistics.calculateMostAskedFAQs(10);
     }
 
     @DeleteMapping("{faqId}")
