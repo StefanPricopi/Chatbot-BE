@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/faqs")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5174")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ChatbotFAQController {
     private final CreateChatbotFAQ createFAQ;
     private final GetChatbotFAQ getFAQs;
@@ -56,7 +56,7 @@ public class ChatbotFAQController {
 
     @PostMapping("/getChatbotResponse")
     public String getChatbotResponse(@RequestBody ChatbotRequest request) {
-        String response = getFAQs.processUserQuery(request.getMessage(), request.getUserId());
+        String response = getFAQs.processUserQuery(request.getMessage(), request.getUserId(), request.getAttempts(), request.isEndOfConversation());
         return response != null ? response : "I'm sorry, I couldn't find an answer to your question.";
     }
 

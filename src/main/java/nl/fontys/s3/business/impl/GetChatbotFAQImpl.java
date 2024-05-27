@@ -71,17 +71,33 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
     }
 
     @Override
-    public String processUserQuery(String userInput, int userId) {
+    public String processUserQuery(String userInput, int userId, int attempts, boolean endOfConversation) {
         // Preprocess user input (optional)
         String processedInput = userInput.toLowerCase();
 
         // Check if the query is bid-related
+        String response;
         if (isBidRelated(processedInput)) {
-            return bidService.getAnswerForBidQuestion(processedInput, userId);
+            response = bidService.getAnswerForBidQuestion(processedInput, userId);
+        } else {
+            // Calculate the best matching FAQ for the processed input
+            response = calculateBestMatchingFAQ(processedInput);
         }
 
-        // Calculate the best matching FAQ for the processed input
-        return calculateBestMatchingFAQ(processedInput);
+        if (response == null || response.equals("Sorry, I couldn't find an answer to your question.")) {
+            attempts++;
+            if (attempts >= 3) {
+                return "I don’t understand you, can I connect you to an employee?";
+            } else {
+                return "I couldn’t find an answer to your question. Can you please provide more details? [Attempts: " + attempts + "]";
+            }
+        } else {
+            if (endOfConversation) {
+                return response + "\n\nWas this helpful? [YES/NO]";
+            } else {
+                return response;
+            }
+        }
     }
 
     private boolean isBidRelated(String input) {

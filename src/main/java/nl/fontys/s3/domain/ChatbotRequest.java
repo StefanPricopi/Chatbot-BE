@@ -6,4 +6,6 @@ import lombok.Data;
 public class ChatbotRequest {
     private String message;
     private int userId;
+    private int attempts;
+    private boolean endOfConversation;
 }

@@ -8,5 +8,5 @@ import java.util.List;
 public interface GetChatbotFAQ {
     GetAllChatbotFAQResponse getFAQ();
     List<ChatbotFAQEntity> getFAQsByKeyword(String keyword);
-    String processUserQuery(String userInput, int userId);
+    String processUserQuery(String userInput, int userId, int attempts, boolean state);
 }
