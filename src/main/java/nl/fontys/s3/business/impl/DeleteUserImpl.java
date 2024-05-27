@@ -11,5 +11,5 @@ public class DeleteUserImpl implements DeleteUser {
     private final UserRepository userRepository;
 
     @Override
-    public void deleteUser(long userId) {this.userRepository.deleteById(userId);}
+    public void deleteUser(long userid) {this.userRepository.deleteById(userid);}
 }
