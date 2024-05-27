@@ -11,6 +11,7 @@ public class ChatlogConverter {
                 .userId(chatEntity.getCustomer().getUserId())
                 .email(chatEntity.getCustomer().getEmail())
                 .roles(chatEntity.getCustomer().getRoles())
+                .dateTime(chatEntity.getDateTime())
                 .build();
 
 
@@ -19,6 +20,7 @@ public class ChatlogConverter {
                 .createdBy(temp)
                 .messages(chatEntity.getMessages())
                 .hasBeenSolved(chatEntity.isOpen())
+                .dateTime(chatEntity.getDateTime())
                 .build();
     }
 }

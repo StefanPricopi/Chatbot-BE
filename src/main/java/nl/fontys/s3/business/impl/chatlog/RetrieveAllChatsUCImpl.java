@@ -26,6 +26,8 @@ public class RetrieveAllChatsUCImpl implements RetrieveAllChatsUC {
                 .map(ChatlogConverter::chatConverter)
                 .toList();
 
+        System.out.print(tempChat.get(0).getDateTime());
+
         return GetAllChatsResponse.builder()
                 .allChats(tempChat)
                 .build();

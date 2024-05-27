@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import nl.fontys.s3.persistence.entity.MessageEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -16,6 +17,9 @@ public class ReadChatResponse {
     private SendByDTO createdBy;
     @NotNull
     private List<MessageEntity> messages;
+
+    private LocalDateTime dateTime;
+
     @NotNull
     private boolean hasBeenSolved;
 }

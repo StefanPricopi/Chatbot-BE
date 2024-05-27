@@ -31,6 +31,7 @@ public class RetrieveChatUCImpl implements RetrieveChatUC {
                 .id(tmp.get().getId())
                 .createdBy(tempSend)
                 .messages(tmp.get().getMessages())
+                .dateTime(tmp.get().getDateTime())
                 .hasBeenSolved(tmp.get().isOpen())
                 .build();
     }

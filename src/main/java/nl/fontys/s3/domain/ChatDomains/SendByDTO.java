@@ -4,6 +4,7 @@ package nl.fontys.s3.domain.ChatDomains;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Builder
@@ -13,4 +14,5 @@ public class SendByDTO {
     private String username;
     private String email;
     private Set<String> roles;
+    private LocalDateTime dateTime;
 }

@@ -8,6 +8,7 @@ import nl.fontys.s3.persistence.entity.MessageEntity;
 import nl.fontys.s3.persistence.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -102,6 +103,7 @@ public class ChatlogRepoImpl implements ChatlogRepository {
                         // Underneath is temporary!
                         .id(chat_id)
                         .customer(user)
+                        .dateTime(LocalDateTime.now())
                         .messages(new ArrayList<>())
                 .build());
 

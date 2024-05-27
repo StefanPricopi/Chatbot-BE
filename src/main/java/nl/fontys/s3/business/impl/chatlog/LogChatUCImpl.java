@@ -16,6 +16,8 @@ public class LogChatUCImpl implements LogChatUC {
     @Override
     public void logChat(long chat_id, MessageRequest msg) {
 
+        System.out.print("So the date time we got: " + msg.getDateTime());
+
         chatlogRepository.logChat(chat_id, MessageEntity.builder()
                         .sendBy(msg.getSendBy())
                         .message(msg.getMessage())
