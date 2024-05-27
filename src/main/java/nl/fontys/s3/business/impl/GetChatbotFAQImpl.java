@@ -20,6 +20,7 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
 
     private final ChatbotFAQJpaRepository faqRepository;
     private final KeywordMapGenerator keywordMapGenerator;
+    private final BidService bidService;
 
     private Map<String, List<String>> keywordMap;
     private Map<String, Integer> keywordWeights;
@@ -32,9 +33,10 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
     }
 
     @Autowired
-    public GetChatbotFAQImpl(ChatbotFAQJpaRepository faqRepository, KeywordMapGenerator keywordMapGenerator) {
+    public GetChatbotFAQImpl(ChatbotFAQJpaRepository faqRepository, KeywordMapGenerator keywordMapGenerator, BidService bidService) {
         this.faqRepository = faqRepository;
         this.keywordMapGenerator = keywordMapGenerator;
+        this.bidService = bidService;
     }
 
     @Override
@@ -69,12 +71,46 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
     }
 
     @Override
-    public String processUserQuery(String userInput) {
+    public String processUserQuery(String userInput, int userId, int attempts, boolean endOfConversation) {
         // Preprocess user input (optional)
         String processedInput = userInput.toLowerCase();
 
-        // Calculate the best matching FAQ for the processed input
-        return calculateBestMatchingFAQ(processedInput);
+        // Check if the query is bid-related
+        String response;
+        if (isBidRelated(processedInput)) {
+            response = bidService.getAnswerForBidQuestion(processedInput, userId);
+        } else {
+            // Calculate the best matching FAQ for the processed input
+            response = calculateBestMatchingFAQ(processedInput);
+        }
+
+        if (response == null || response.equals("Sorry, I couldn't find an answer to your question.")) {
+            attempts++;
+            if (attempts >= 3) {
+                return "I don’t understand you, can I connect you to an employee?";
+            } else {
+                return "I couldn’t find an answer to your question. Can you please provide more details? [Attempts: " + attempts + "]";
+            }
+        } else {
+            if (endOfConversation) {
+                return response + "\n\nWas this helpful? [YES/NO]";
+            } else {
+                return response;
+            }
+        }
+    }
+
+    private boolean isBidRelated(String input) {
+        // Define bid-related keywords
+        List<String> bidKeywords = List.of("bid", "bids", "auction", "offer");
+
+        // Check if the input contains any bid-related keywords
+        for (String keyword : bidKeywords) {
+            if (input.contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String calculateBestMatchingFAQ(String input) {
@@ -121,5 +157,4 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
         // The matching score is the size of the intersection
         return userKeywords.size();
     }
-
 }

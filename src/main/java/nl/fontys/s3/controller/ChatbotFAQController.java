@@ -6,12 +6,9 @@ import nl.fontys.s3.business.CreateChatbotFAQ;
 import nl.fontys.s3.business.DeleteChatbotFAQ;
 import nl.fontys.s3.business.GetChatbotFAQ;
 import nl.fontys.s3.business.UpdateChatbotFAQ;
-import nl.fontys.s3.business.impl.CalculateFAQStatistics;
-import nl.fontys.s3.domain.FAQStatistics;
-import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQRequest;
-import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQResponse;
-import nl.fontys.s3.domain.chatbotFAQ.GetAllChatbotFAQResponse;
-import nl.fontys.s3.domain.chatbotFAQ.UpdateChatbotFAQRequest;
+import nl.fontys.s3.business.impl.BidService;
+import nl.fontys.s3.domain.*;
+import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +18,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/faqs")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5174")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ChatbotFAQController {
     private final CreateChatbotFAQ createFAQ;
     private final GetChatbotFAQ getFAQs;
     private final DeleteChatbotFAQ deleteFAQ;
     private final UpdateChatbotFAQ updateFAQ;
-    private final CalculateFAQStatistics calculateFAQStatistics;
-
+    private final BidService bidService;
     @GetMapping()
     public ResponseEntity<GetAllChatbotFAQResponse> getAllFAQs(){
         GetAllChatbotFAQResponse response = getFAQs.getFAQ();
@@ -37,18 +33,6 @@ public class ChatbotFAQController {
             System.out.println(response.getChatbotFAQS().get(i));
         }
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/outOfOfficeChats")
-    public int getOutOfOfficeChats() {
-        return calculateFAQStatistics.calculateOutOfOfficeChats();
-    }
-
-
-    @GetMapping("/statistics")
-    public List<FAQStatistics> getFAQStatistics() {
-        // Get top 10 most asked FAQs
-        return calculateFAQStatistics.calculateMostAskedFAQs(10);
     }
 
     @DeleteMapping("{faqId}")
@@ -71,8 +55,8 @@ public class ChatbotFAQController {
     }
 
     @PostMapping("/getChatbotResponse")
-    public String getChatbotResponse(@RequestBody String message) {
-        String response = getFAQs.processUserQuery(message);
+    public String getChatbotResponse(@RequestBody ChatbotRequest request) {
+        String response = getFAQs.processUserQuery(request.getMessage(), request.getUserId(), request.getAttempts(), request.isEndOfConversation());
         return response != null ? response : "I'm sorry, I couldn't find an answer to your question.";
     }
 
