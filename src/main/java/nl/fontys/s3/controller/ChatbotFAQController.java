@@ -12,6 +12,7 @@ import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import nl.fontys.s3.domain.chatbotFAQ.*;
 
 import java.util.List;
 
@@ -62,4 +63,3 @@ public class ChatbotFAQController {
 
 
 }
-

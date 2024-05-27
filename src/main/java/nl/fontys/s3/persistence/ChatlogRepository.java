@@ -17,5 +17,7 @@ public interface ChatlogRepository {
 
     List<ChatEntity> retrieveAllChats();
 
+    void updateStatus(int id, boolean status);
+
     void deleteChat(long chatId) throws Exception;
 }

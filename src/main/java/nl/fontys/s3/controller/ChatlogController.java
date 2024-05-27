@@ -18,6 +18,7 @@ public class ChatlogController {
     private CreateChatUC createChatUC;
     private LogChatUC logChatUC;
     private DeleteChatLogUC deleteChatLogUC;
+    private UpdateStatusUC updateStatusUC;
     private RetrieveChatUC retrieveChatUC;
     private RetrieveAllChatsUC retrieveAllChatsUC;
 
@@ -121,4 +122,17 @@ public class ChatlogController {
         }
     }
 
+    @PostMapping("/u_status")
+    public ResponseEntity<Void> updateChatStatus(@RequestBody UpdateChatStatusRequest status)
+    {
+        try
+        {
+            updateStatusUC.updateStatus(status);
+            return ResponseEntity.ok().build();
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

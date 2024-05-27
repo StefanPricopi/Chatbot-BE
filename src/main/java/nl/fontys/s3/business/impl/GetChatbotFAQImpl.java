@@ -100,6 +100,11 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
         }
     }
 
+    @Override
+    public Map<String, List<String>> getKeywordMap() {
+        return keywordMap;
+    }
+
     private boolean isBidRelated(String input) {
         // Define bid-related keywords
         List<String> bidKeywords = List.of("bid", "bids", "auction", "offer");

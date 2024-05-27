@@ -133,6 +133,19 @@ public class ChatlogRepoImpl implements ChatlogRepository {
     }
 
     @Override
+    public void updateStatus(int id, boolean status) {
+        Optional<ChatEntity> tmp = chatEntities.stream().filter(chatEntity -> chatEntity.getId() == id).findFirst();
+        if(!tmp.isEmpty())
+        {
+            tmp.get().setOpen(status);
+        }
+        else
+        {
+            System.out.println("Oh, chat with that id doesn't exist");
+        }
+    }
+
+    @Override
     public void deleteChat(long chatId) throws Exception {
         try
         {
