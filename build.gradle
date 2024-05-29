@@ -26,6 +26,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.27'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -37,6 +38,8 @@ dependencies {
     implementation 'org.hibernate.orm:hibernate-core:6.5.0.CR2'
     implementation 'com.microsoft.sqlserver:mssql-jdbc:12.6.1.jre11'
     implementation 'org.springframework:spring-jdbc:6.1.6'
+
+
 
 }
 

@@ -1,4 +1,4 @@
-package nl.fontys.s3.domain;
+package nl.fontys.s3.domain.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

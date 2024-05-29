@@ -1,4 +1,18 @@
 spring:
+  mail:
+    host: smtp.office365.com
+    port: 587
+    username: basworldms@outlook.com
+    password: HHH1234!
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
   datasource:
     url: jdbc:sqlserver://mssqlstud.fhict.local;databaseName=dbi451040_hhh;encrypt=false
     username: dbi451040_hhh
@@ -11,6 +25,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+
 
 jwt:
   secret: LSDKJFLSDKJFALSKDJFLSKJDFLKJ2354325234234235235325235325

@@ -1,6 +1,7 @@
 package nl.fontys.s3.configuration.security;
 
 import nl.fontys.s3.configuration.security.auth.AuthenticationRequestFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebSecurityConfig {
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                            AuthenticationEntryPoint authenticationEntryPoint,
@@ -34,8 +36,10 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/users", "/tokens").permitAll() // Creating a student and login are public
                                 .requestMatchers(HttpMethod.GET, "/chat", "/faqs", "/faqs/statistics", "/faqs/outOfOfficeChats").permitAll() // Creating a student and login are public
                                 .requestMatchers("/ws").permitAll()
+                                .requestMatchers("/mail/**").permitAll()
                                 .anyRequest().authenticated()                                             // Everything else --> authentication required, which is Spring security's default behaviour
                 )
+
                 .exceptionHandling(configure -> configure.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
