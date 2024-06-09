@@ -33,11 +33,11 @@ public class LogChatUCImpl implements LogChatUC {
         {
             throw new Exception("Chat not found");
         }
-//
-//        if(foundUser.isEmpty())
-//        {
-//            throw new Exception("User doesn't exist!");
-//        }
+
+        if(foundUser.isEmpty())
+        {
+            throw new Exception("User doesn't exist!");
+        }
 
         MessageEntity messageEntity = MessageEntity.builder()
                 .chat(foundChat.get())
