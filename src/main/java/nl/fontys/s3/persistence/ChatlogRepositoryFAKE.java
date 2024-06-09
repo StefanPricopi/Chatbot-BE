@@ -7,7 +7,7 @@ import nl.fontys.s3.persistence.entity.UserEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface ChatlogRepository {
+public interface ChatlogRepositoryFAKE {
 
     Long createChat(UserEntity user);
 

@@ -4,16 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
-import nl.fontys.s3.persistence.entity.UserEntity;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @Builder
 public class MessageRequest {
     @NotNull
-    private SendByDTO sendBy;
+    private long user_id;
     @NotBlank
     private String message;
     private LocalDateTime dateTime;

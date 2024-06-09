@@ -1,8 +1,7 @@
 package nl.fontys.s3.persistence.impl;
 
-import lombok.AllArgsConstructor;
 import nl.fontys.s3.domain.ChatDomains.SendByDTO;
-import nl.fontys.s3.persistence.ChatlogRepository;
+import nl.fontys.s3.persistence.ChatlogRepositoryFAKE;
 import nl.fontys.s3.persistence.entity.ChatEntity;
 import nl.fontys.s3.persistence.entity.MessageEntity;
 import nl.fontys.s3.persistence.entity.UserEntity;
@@ -12,12 +11,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
-public class ChatlogRepoImpl implements ChatlogRepository {
+public class ChatlogRepoImplFAKE implements ChatlogRepositoryFAKE {
 
     /// TEMP Chatsaves instead of DB atm
     private final List<ChatEntity>  chatEntities;
 
-    public ChatlogRepoImpl()
+    public ChatlogRepoImplFAKE()
     {
         chatEntities = new ArrayList<>();
 
@@ -59,20 +58,20 @@ public class ChatlogRepoImpl implements ChatlogRepository {
 
         List<MessageEntity> msgTst = new ArrayList<>();
         msgTst.add(MessageEntity.builder()
-                .sendBy(tempCustomer)
-                .message_id(1)
+                .sendBy(null)
+                .id(1)
                 .message("Need some help Demo")
                 .build());
 
         msgTst.add(MessageEntity.builder()
-                .sendBy(tempBot)
-                .message_id(2)
+                .sendBy(null)
+                .id(2)
                 .message("What can I help you with?")
                 .build());
 
         msgTst.add(MessageEntity.builder()
-                .sendBy(tempCustomer)
-                .message_id(3)
+                .sendBy(null)
+                .id(3)
                 .message("No clue, just need to see if this works!")
                 .build());
 

@@ -4,9 +4,10 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.GetChatbotFAQ;
 import nl.fontys.s3.domain.ChatDomains.SendByDTO;
 import nl.fontys.s3.domain.FAQStatistics;
-import nl.fontys.s3.persistence.ChatlogRepository;
+import nl.fontys.s3.persistence.ChatlogRepositoryFAKE;
 import nl.fontys.s3.persistence.entity.ChatEntity;
 import nl.fontys.s3.persistence.entity.MessageEntity;
+import nl.fontys.s3.persistence.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,12 +20,12 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class CalculateFAQStatistics {
-    private final ChatlogRepository chatlogRepository;
+    private final ChatlogRepositoryFAKE chatlogRepositoryFAKE;
     private final GetChatbotFAQ getChatbotFAQ;
 
     public List<FAQStatistics> calculateMostAskedFAQs(int topN) {
         // Retrieve all chat logs
-        List<ChatEntity> allChatLogs = chatlogRepository.retrieveAllChats();
+        List<ChatEntity> allChatLogs = chatlogRepositoryFAKE.retrieveAllChats();
 
         // Retrieve the keyword map
         Map<String, List<String>> keywordMap = getChatbotFAQ.getKeywordMap();
@@ -81,7 +82,7 @@ public class CalculateFAQStatistics {
     }
 
     private boolean isBotMessage(MessageEntity message) {
-        SendByDTO sender = message.getSendBy();
+        UserEntity sender = message.getSendBy();
         // Check if the sender's role indicates a bot
         return sender.getRoles().contains("Customer Service");
     }
@@ -101,7 +102,7 @@ public class CalculateFAQStatistics {
     }
 
     public int calculateOutOfOfficeChats() {
-        List<ChatEntity> allChatLogs = chatlogRepository.retrieveAllChats();
+        List<ChatEntity> allChatLogs = chatlogRepositoryFAKE.retrieveAllChats();
         System.out.println(allChatLogs);
         int outOfOfficeChatCount = 0;
 

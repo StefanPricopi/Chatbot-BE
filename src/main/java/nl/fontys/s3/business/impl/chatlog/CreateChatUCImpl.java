@@ -5,22 +5,23 @@ import nl.fontys.s3.business.ChatLogPck.CreateChatUC;
 import nl.fontys.s3.business.exceptions.UserNotFoundException;
 import nl.fontys.s3.domain.ChatDomains.CreateChatResponse;
 import nl.fontys.s3.domain.ChatDomains.MessageRequest;
-import nl.fontys.s3.persistence.ChatlogRepository;
+import nl.fontys.s3.persistence.ChatlogRepoJPA;
+import nl.fontys.s3.persistence.ChatlogRepositoryFAKE;
 import nl.fontys.s3.persistence.UserRepository;
+import nl.fontys.s3.persistence.entity.ChatEntity;
 import nl.fontys.s3.persistence.entity.MessageEntity;
 import nl.fontys.s3.persistence.entity.UserEntity;
-import nl.fontys.s3.persistence.impl.ChatlogRepoImpl;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class CreateChatUCImpl implements CreateChatUC {
     //xx
-    private ChatlogRepository chatlogRepository;
+    private ChatlogRepoJPA chatlogRepoJPA;
     private UserRepository userRepository;
 
 
@@ -33,12 +34,25 @@ public class CreateChatUCImpl implements CreateChatUC {
            throw new UserNotFoundException();
         }
 
-        Long id = chatlogRepository.createChat(customer.get());
-        chatlogRepository.logChat(id, MessageEntity.builder()
-                        .message(messageRequest.getMessage())
-                        .sendBy(messageRequest.getSendBy())
-                        .dateTime(messageRequest.getDateTime())
-                .build());
+        System.out.println(customer.get().getUsername());
+
+        ChatEntity chatEntity = ChatEntity.builder()
+                .customer(customer.get())
+                .isOpen(false)
+                .build();
+
+        MessageEntity tempMsg = MessageEntity.builder()
+                .message(messageRequest.getMessage())
+                .chat(chatEntity)
+                .sendBy(customer.get())
+                .build();
+
+        chatEntity.setMessages(List.of(tempMsg));
+
+
+        ChatEntity savedChat = chatlogRepoJPA.save(chatEntity);
+
+        Long id = savedChat.getId();
         return CreateChatResponse.builder()
                 .chat_id(id)
                 .build();

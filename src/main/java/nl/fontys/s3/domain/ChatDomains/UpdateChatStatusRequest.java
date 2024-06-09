@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class UpdateChatStatusRequest {
-    int chatId;
+    long chatId;
     boolean status;
 }

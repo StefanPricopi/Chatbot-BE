@@ -3,7 +3,8 @@ package nl.fontys.s3.business.impl.chatlog;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.ChatLogPck.UpdateStatusUC;
 import nl.fontys.s3.domain.ChatDomains.UpdateChatStatusRequest;
-import nl.fontys.s3.persistence.ChatlogRepository;
+import nl.fontys.s3.persistence.ChatlogRepoJPA;
+import nl.fontys.s3.persistence.ChatlogRepositoryFAKE;
 import nl.fontys.s3.persistence.entity.ChatEntity;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +14,17 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UpdateChatStatusUCImpl implements UpdateStatusUC {
 
-    private final ChatlogRepository chatlogRepository;
+    private final ChatlogRepoJPA chatlogRepositoryFAKE;
 
     @Override
-    public void updateStatus(UpdateChatStatusRequest status) {
-        Optional<ChatEntity> chat = chatlogRepository.retrieveChat(status.getChatId());
-        if(!chat.isEmpty())
+    public void updateStatus(UpdateChatStatusRequest status) throws Exception {
+        Optional<ChatEntity> chat = chatlogRepositoryFAKE.findById(status.getChatId());
+        if(chat.isEmpty())
         {
-            System.out.println("So the status of this request: " + status.isStatus());
+            throw new Exception("Chat not found");
+        }
 
-            chatlogRepository.updateStatus(status.getChatId(), status.isStatus());
-        }
-        else {
-            System.out.println("Oh no something went wrong");
-        }
+        chat.get().setOpen(status.isStatus());
+        chatlogRepositoryFAKE.save(chat.get());
     }
 }

@@ -4,6 +4,7 @@ package nl.fontys.s3.controller;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.ChatLogPck.*;
 import nl.fontys.s3.domain.ChatDomains.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,23 +33,16 @@ public class ChatlogController {
         //Example
         try
         {
-            System.out.println(chatRequest.getSendBy().getRoles());
-
-            SendByDTO tmpSend = SendByDTO.builder()
-                    .roles(Set.of(chatRequest.getSendBy().getRoles().toString()))
-                    .build();
 
             MessageRequest temp = MessageRequest.builder()
                     .message(chatRequest.getMessage())
                     .dateTime(chatRequest.getDateTime())
-                    .sendBy(tmpSend)
+                    .user_id(chatRequest.getUser_id())
                     .build();
 
 
-            CreateChatResponse chat = createChatUC.createChat(chatRequest.getSendBy().getUserId(), chatRequest);
+            CreateChatResponse chat = createChatUC.createChat(chatRequest.getUser_id(), chatRequest);
 
-
-            System.out.println("So fires here: " + chat.getChat_id());
             return ResponseEntity.ok().body(chat);
         }
         catch(Exception e)
@@ -71,7 +65,7 @@ public class ChatlogController {
         }
         catch(Exception e)
         {
-            System.out.println("Something went wrong and i'm nut exactlysure what. " +  e.getMessage());
+            System.out.println("Something went wrong in ChatController: " +  e.getMessage());
             return ResponseEntity.internalServerError().body("Error " + e.getMessage());
         }
 
@@ -97,12 +91,13 @@ public class ChatlogController {
         // retrieves all chats
         try
         {
-            return ResponseEntity.ok().body(retrieveChatUC.retrieveChat(id));
-
+            ReadChatResponse resp = retrieveChatUC.retrieveChat(id);
+            return ResponseEntity.ok().body(resp);
         }
         catch(Exception e)
         {
-            return ResponseEntity.notFound().build();
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
     }
@@ -118,7 +113,7 @@ public class ChatlogController {
         }
         catch(Exception e)
         {
-            return ResponseEntity.internalServerError().body("Error deleting chat \'" + e.getMessage() + " \'");
+            return ResponseEntity.notFound().build();//("Error deleting chat \'" + e.getMessage() + " \'");
         }
     }
 
