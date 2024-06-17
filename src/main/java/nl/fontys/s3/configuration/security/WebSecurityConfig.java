@@ -32,7 +32,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(registry ->
                         registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()                 // CORS pre-flight requests should be public
                                 .requestMatchers(HttpMethod.POST, "/users", "/tokens").permitAll() // Creating a student and login are public
-                                .requestMatchers(HttpMethod.GET, "/chat", "/faqs", "/faqs/statistics", "/faqs/outOfOfficeChats").permitAll() // Creating a student and login are public
+                                .requestMatchers(HttpMethod.GET, "/chat", "/faqs", "/faqs/**").permitAll() // Creating a student and login are public
                                 .requestMatchers(HttpMethod.POST, "/users", "/tokens", "/faqs").permitAll() // Creating a student and login are public
                                 .requestMatchers(HttpMethod.GET, "/chat", "/faqs").permitAll() // Creating a student and login are public
                                 .requestMatchers(HttpMethod.DELETE, "/faqs/").permitAll()

@@ -2,9 +2,8 @@ package nl.fontys.s3.business.impl;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.GetChatbotFAQ;
-import nl.fontys.s3.domain.ChatDomains.SendByDTO;
 import nl.fontys.s3.domain.FAQStatistics;
-import nl.fontys.s3.persistence.ChatlogRepositoryFAKE;
+import nl.fontys.s3.persistence.ChatlogRepoJPA;
 import nl.fontys.s3.persistence.entity.ChatEntity;
 import nl.fontys.s3.persistence.entity.MessageEntity;
 import nl.fontys.s3.persistence.entity.UserEntity;
@@ -20,15 +19,13 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class CalculateFAQStatistics {
-    private final ChatlogRepositoryFAKE chatlogRepositoryFAKE;
+    private final ChatlogRepoJPA chatlogRepoJPA;
     private final GetChatbotFAQ getChatbotFAQ;
 
     public List<FAQStatistics> calculateMostAskedFAQs(int topN) {
-        // Retrieve all chat logs
-        List<ChatEntity> allChatLogs = chatlogRepositoryFAKE.retrieveAllChats();
-
-        // Retrieve the keyword map
+        List<ChatEntity> allChatLogs = chatlogRepoJPA.findAll();
         Map<String, List<String>> keywordMap = getChatbotFAQ.getKeywordMap();
+
         for (Map.Entry<String, List<String>> entry : keywordMap.entrySet()) {
             String category = entry.getKey();
             List<String> keywords = entry.getValue();
@@ -36,79 +33,65 @@ public class CalculateFAQStatistics {
             System.out.println("Keywords: " + keywords);
         }
 
-        // Calculate FAQ statistics based on chat logs
         return calculateFAQStatisticsFromChatLogs(allChatLogs, keywordMap, topN);
     }
 
     private List<FAQStatistics> calculateFAQStatisticsFromChatLogs(List<ChatEntity> chatLogs, Map<String, List<String>> keywordMap, int topN) {
-        // Map to store FAQ questions and their counts
         Map<String, Integer> faqQuestionCountMap = new HashMap<>();
 
-        // Count occurrences of each FAQ question
         for (ChatEntity chatLog : chatLogs) {
             for (MessageEntity message : chatLog.getMessages()) {
-                // Check if the message is a user question and contains relevant keywords
                 boolean isUserMessage = !isBotMessage(message) && isUserQuestion(message.getMessage(), keywordMap);
                 if (isUserMessage) {
-                    // Replace user question with FAQ question
                     String faqQuestion = findFAQForUserQuestion(message.getMessage(), keywordMap);
-                    // Increment count for the FAQ question
                     faqQuestionCountMap.put(faqQuestion, faqQuestionCountMap.getOrDefault(faqQuestion, 0) + 1);
                 }
             }
         }
 
-        // Convert map to list of FAQStatistics
         List<FAQStatistics> faqStatisticsList = new ArrayList<>();
         faqQuestionCountMap.forEach((faqQuestion, count) -> faqStatisticsList.add(new FAQStatistics(faqQuestion, count)));
-
-        // Sort the list by count
         faqStatisticsList.sort((f1, f2) -> Integer.compare(f2.getCount(), f1.getCount()));
 
-        // Return top N FAQs
         return faqStatisticsList.subList(0, Math.min(topN, faqStatisticsList.size()));
     }
 
     private boolean isUserQuestion(String message, Map<String, List<String>> keywordMap) {
-        // Check if the message contains any keyword from the keyword map
         for (List<String> keywords : keywordMap.values()) {
             for (String keyword : keywords) {
                 if (message.toLowerCase().contains(keyword.toLowerCase()) && keyword.length() >= 3) {
-                    return true; // It's a user question
+                    return true;
                 }
             }
         }
-        return false; // It's not a user question
+        return false;
     }
 
     private boolean isBotMessage(MessageEntity message) {
         UserEntity sender = message.getSendBy();
-        // Check if the sender's role indicates a bot
         return sender.getRoles().contains("Customer Service");
     }
 
     private String findFAQForUserQuestion(String userQuestion, Map<String, List<String>> keywordMap) {
-        // Iterate through the FAQ questions and check if the user question contains any relevant keyword
         for (Map.Entry<String, List<String>> entry : keywordMap.entrySet()) {
             String faqQuestion = entry.getKey();
             List<String> keywords = entry.getValue();
             for (String keyword : keywords) {
                 if (userQuestion.toLowerCase().contains(keyword.toLowerCase())) {
-                    return faqQuestion; // Return the corresponding FAQ question
+                    return faqQuestion;
                 }
             }
         }
-        return userQuestion; // If no match found, return the original user question
+        return userQuestion;
     }
 
     public int calculateOutOfOfficeChats() {
-        List<ChatEntity> allChatLogs = chatlogRepositoryFAKE.retrieveAllChats();
-        System.out.println(allChatLogs);
+        List<ChatEntity> allChatLogs = chatlogRepoJPA.findAll();
         int outOfOfficeChatCount = 0;
 
         for (ChatEntity chatLog : allChatLogs) {
             for (MessageEntity message : chatLog.getMessages()) {
-                if (isOutOfOfficeHours(message.getDateTime())) {
+                if (message.getDateTime() != null && isOutOfOfficeHours(message.getDateTime())) {
                     outOfOfficeChatCount++;
                 }
             }
@@ -117,10 +100,27 @@ public class CalculateFAQStatistics {
     }
 
     private boolean isOutOfOfficeHours(LocalDateTime timestamp) {
+        if (timestamp == null) {
+            return false;
+        }
         LocalTime start = LocalTime.of(7, 0);
         LocalTime end = LocalTime.of(18, 0);
         LocalTime messageTime = timestamp.toLocalTime();
         return messageTime.isBefore(start) || messageTime.isAfter(end);
     }
 
+    public List<String> getFailedQuestions() {
+        List<ChatEntity> allChatLogs = chatlogRepoJPA.findAll();
+        List<String> failedQuestions = new ArrayList<>();
+
+        for (ChatEntity chatLog : allChatLogs) {
+            for (MessageEntity message : chatLog.getMessages()) {
+                if (!message.getChat().isOpen()) {
+                    failedQuestions.add(message.getMessage());
+                }
+            }
+        }
+
+        return failedQuestions;
+    }
 }

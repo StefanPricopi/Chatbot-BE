@@ -7,8 +7,8 @@ import nl.fontys.s3.business.DeleteChatbotFAQ;
 import nl.fontys.s3.business.GetChatbotFAQ;
 import nl.fontys.s3.business.UpdateChatbotFAQ;
 import nl.fontys.s3.business.impl.BidService;
+import nl.fontys.s3.business.impl.CalculateFAQStatistics;
 import nl.fontys.s3.domain.*;
-import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +26,7 @@ public class ChatbotFAQController {
     private final DeleteChatbotFAQ deleteFAQ;
     private final UpdateChatbotFAQ updateFAQ;
     private final BidService bidService;
+    private final CalculateFAQStatistics calculateFAQStatistics;
     @GetMapping()
     public ResponseEntity<GetAllChatbotFAQResponse> getAllFAQs(){
         GetAllChatbotFAQResponse response = getFAQs.getFAQ();
@@ -61,5 +62,20 @@ public class ChatbotFAQController {
         return response != null ? response : "I'm sorry, I couldn't find an answer to your question.";
     }
 
+    @GetMapping("/outOfOfficeChats")
+    public int getOutOfOfficeChats() {
+        return calculateFAQStatistics.calculateOutOfOfficeChats();
+    }
 
+
+    @GetMapping("/statistics")
+    public List<FAQStatistics> getFAQStatistics() {
+        return calculateFAQStatistics.calculateMostAskedFAQs(10);
+    }
+
+    @GetMapping("/failedQuestions")
+    public ResponseEntity<List<String>> getFailedQuestions() {
+        List<String> failedQuestions = calculateFAQStatistics.getFailedQuestions();
+        return ResponseEntity.ok(failedQuestions);
+    }
 }
