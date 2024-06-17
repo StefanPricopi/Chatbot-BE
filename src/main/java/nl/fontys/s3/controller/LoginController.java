@@ -1,6 +1,7 @@
 package nl.fontys.s3.controller;
 
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.business.Login;
 import nl.fontys.s3.domain.login.LoginRequest;
@@ -19,7 +20,7 @@ public class LoginController {
     private final Login login;
 
     @PostMapping()
-    public ResponseEntity<TwoFactorAuthResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<TwoFactorAuthResponse> login(@RequestBody LoginRequest loginRequest) throws MessagingException {
         TwoFactorAuthResponse response = login.login(loginRequest);
         return ResponseEntity.ok(response);
     }
