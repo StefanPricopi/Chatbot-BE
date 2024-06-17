@@ -6,27 +6,26 @@ import nl.fontys.s3.business.CreateChatbotFAQ;
 import nl.fontys.s3.business.DeleteChatbotFAQ;
 import nl.fontys.s3.business.GetChatbotFAQ;
 import nl.fontys.s3.business.UpdateChatbotFAQ;
-import nl.fontys.s3.domain.CreateChatbotFAQRequest;
-import nl.fontys.s3.domain.CreateChatbotFAQResponse;
-import nl.fontys.s3.domain.GetAllChatbotFAQResponse;
-import nl.fontys.s3.domain.UpdateChatbotFAQRequest;
+import nl.fontys.s3.business.impl.BidService;
+import nl.fontys.s3.domain.*;
 import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import nl.fontys.s3.domain.chatbotFAQ.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/faqs")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5175")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ChatbotFAQController {
     private final CreateChatbotFAQ createFAQ;
     private final GetChatbotFAQ getFAQs;
     private final DeleteChatbotFAQ deleteFAQ;
     private final UpdateChatbotFAQ updateFAQ;
-
+    private final BidService bidService;
     @GetMapping()
     public ResponseEntity<GetAllChatbotFAQResponse> getAllFAQs(){
         GetAllChatbotFAQResponse response = getFAQs.getFAQ();
@@ -55,11 +54,12 @@ public class ChatbotFAQController {
         CreateChatbotFAQResponse response = createFAQ.createFAQ(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    @GetMapping("/search")
-    public ResponseEntity<List<ChatbotFAQEntity>> getFAQsByKeyword(@RequestParam String keyword) {
-        List<ChatbotFAQEntity> faqs = getFAQs.getFAQsByKeyword(keyword);
-        return ResponseEntity.ok(faqs);
+
+    @PostMapping("/getChatbotResponse")
+    public String getChatbotResponse(@RequestBody ChatbotRequest request) {
+        String response = getFAQs.processUserQuery(request.getMessage(), request.getUserId(), request.getAttempts(), request.isEndOfConversation());
+        return response != null ? response : "I'm sorry, I couldn't find an answer to your question.";
     }
 
-}
 
+}

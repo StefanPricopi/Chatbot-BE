@@ -1,4 +1,4 @@
-package nl.fontys.s3.domain;
+package nl.fontys.s3.domain.chatbotFAQ;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

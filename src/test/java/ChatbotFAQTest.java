@@ -1,10 +1,12 @@
-import nl.fontys.s3.business.CreateChatbotFAQ;
 import nl.fontys.s3.business.impl.CreateChatbotFAQImpl;
 import nl.fontys.s3.business.impl.DeleteChatbotFAQImpl;
 import nl.fontys.s3.business.impl.GetChatbotFAQImpl;
 import nl.fontys.s3.business.impl.UpdateChatbotFAQImpl;
 import nl.fontys.s3.domain.*;
-import nl.fontys.s3.persistence.entity.UserEntity;
+import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQRequest;
+import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQResponse;
+import nl.fontys.s3.domain.chatbotFAQ.GetAllChatbotFAQResponse;
+import nl.fontys.s3.domain.chatbotFAQ.UpdateChatbotFAQRequest;
 import nl.fontys.s3.persistence.ChatbotFAQJpaRepository;
 import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
 import org.junit.jupiter.api.BeforeEach;

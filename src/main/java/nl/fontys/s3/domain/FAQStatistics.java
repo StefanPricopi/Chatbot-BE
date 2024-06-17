@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateChatbotFAQResponse {
-    private Long FAQID;
+public class FAQStatistics {
+    private String category;
+    private int count;
 }

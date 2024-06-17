@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class MessageRequest {
@@ -12,4 +14,5 @@ public class MessageRequest {
     private long user_id;
     @NotBlank
     private String message;
+    private LocalDateTime dateTime;
 }

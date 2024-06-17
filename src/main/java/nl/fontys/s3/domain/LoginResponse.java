@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserResponse {
-    private Long userId;
+@AllArgsConstructor
+public class LoginResponse {
+    private String accessToken;
 }

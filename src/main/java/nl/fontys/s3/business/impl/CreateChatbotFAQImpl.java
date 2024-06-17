@@ -2,11 +2,10 @@ package nl.fontys.s3.business.impl;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.CreateChatbotFAQ;
-import nl.fontys.s3.domain.CreateChatbotFAQRequest;
-import nl.fontys.s3.domain.CreateChatbotFAQResponse;
+import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQRequest;
+import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQResponse;
 import nl.fontys.s3.persistence.ChatbotFAQJpaRepository;
 import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

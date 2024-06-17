@@ -1,5 +1,6 @@
 package nl.fontys.s3.domain;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private Long userId;
-    private String userName;
+public class LoginRequest {
+    @NotBlank
+    private String username;
+    @NotBlank
     private String password;
-    private String email;
-    private String role;
 }

@@ -7,15 +7,17 @@ import nl.fontys.s3.persistence.entity.UserEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface ChatlogRepository {
+public interface ChatlogRepositoryFAKE {
 
-    void createChat(UserEntity user);
+    Long createChat(UserEntity user);
 
     void logChat(long chatId, MessageEntity msg);
 
     Optional<ChatEntity> retrieveChat(long chatId);
 
     List<ChatEntity> retrieveAllChats();
+
+    void updateStatus(int id, boolean status);
 
     void deleteChat(long chatId) throws Exception;
 }

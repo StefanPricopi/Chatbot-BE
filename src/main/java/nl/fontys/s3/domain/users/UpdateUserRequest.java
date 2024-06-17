@@ -1,7 +1,9 @@
-package nl.fontys.s3.domain;
+package nl.fontys.s3.domain.users;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import java.util.Set;
 
 @Builder
 @NoArgsConstructor
@@ -11,11 +13,10 @@ import lombok.*;
 public class UpdateUserRequest {
     private Long userId;
     @NotBlank
-    private String userName;
+    private String username;
     @NotBlank
     private String password;
     @NotBlank
     private String email;
-    @NotBlank
-    private String role;
+    private Set<String> roles;
 }

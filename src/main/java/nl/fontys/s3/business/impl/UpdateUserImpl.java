@@ -2,12 +2,11 @@ package nl.fontys.s3.business.impl;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.business.UpdateUser;
-import nl.fontys.s3.domain.UpdateUserRequest;
+import nl.fontys.s3.domain.users.UpdateUserRequest;
 import nl.fontys.s3.persistence.UserRepository;
 import nl.fontys.s3.persistence.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -23,10 +22,10 @@ public class UpdateUserImpl implements UpdateUser {
     }
 
     private void updateFields(UpdateUserRequest request, UserEntity user){
-        user.setUserName(request.getUserName());
+        user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
         user.setEmail(request.getEmail());
-        user.setRole(request.getRole());
+        user.setRolesSet(request.getRoles());
         userRepository.save(user);
     }
 }
