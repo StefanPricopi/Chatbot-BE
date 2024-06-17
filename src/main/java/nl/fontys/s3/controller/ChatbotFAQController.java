@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/faqs")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173","http://localhost:5174"})
 public class ChatbotFAQController {
     private final CreateChatbotFAQ createFAQ;
     private final GetChatbotFAQ getFAQs;
