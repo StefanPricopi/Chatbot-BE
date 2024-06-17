@@ -1,14 +1,10 @@
 package nl.fontys.s3.controller;
 
-import jakarta.mail.MessagingException;
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.business.Login;
-import nl.fontys.s3.configuration.mailservice.SmtpMailSender;
 import nl.fontys.s3.domain.login.LoginRequest;
-import nl.fontys.s3.domain.login.LoginResponse;
 import nl.fontys.s3.domain.login.TwoFactorAuthResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +19,7 @@ public class LoginController {
     private final Login login;
 
     @PostMapping()
-    public ResponseEntity<TwoFactorAuthResponse> login(@RequestBody LoginRequest loginRequest) throws MessagingException {
+    public ResponseEntity<TwoFactorAuthResponse> login(@RequestBody LoginRequest loginRequest) {
         TwoFactorAuthResponse response = login.login(loginRequest);
         return ResponseEntity.ok(response);
     }
