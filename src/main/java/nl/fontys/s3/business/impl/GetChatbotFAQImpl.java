@@ -118,7 +118,7 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
         return false;
     }
 
-    private String calculateBestMatchingFAQ(String input) {
+    public String calculateBestMatchingFAQ(String input) {
         // Preprocess user input (optional)
         String processedInput = input.toLowerCase();
 

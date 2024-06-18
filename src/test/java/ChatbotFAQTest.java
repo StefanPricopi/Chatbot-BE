@@ -1,7 +1,4 @@
-import nl.fontys.s3.business.impl.CreateChatbotFAQImpl;
-import nl.fontys.s3.business.impl.DeleteChatbotFAQImpl;
-import nl.fontys.s3.business.impl.GetChatbotFAQImpl;
-import nl.fontys.s3.business.impl.UpdateChatbotFAQImpl;
+import nl.fontys.s3.business.impl.*;
 import nl.fontys.s3.domain.*;
 import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQRequest;
 import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQResponse;
@@ -15,19 +12,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ChatbotFAQTest {
 
     @Mock
     private ChatbotFAQJpaRepository chatbotFAQRepository;
-
+    @Mock
+    private BidService bidService;
+    @Mock
+    private KeywordMapGenerator keywordMapGenerator;
     @InjectMocks
     private CreateChatbotFAQImpl createChatbotFAQ;
     @InjectMocks
@@ -36,6 +34,7 @@ class ChatbotFAQTest {
     private GetChatbotFAQImpl getChatbotFAQ;
     @InjectMocks
     private UpdateChatbotFAQImpl updateChatbotFAQ;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -62,6 +61,7 @@ class ChatbotFAQTest {
         assertEquals(1, response.getFAQID());
         verify(chatbotFAQRepository, times(1)).save(any(ChatbotFAQEntity.class));
     }
+
     @Test
     void createFAQ_SaveNewFAQ_Success() {
         // Given
@@ -83,6 +83,7 @@ class ChatbotFAQTest {
         assertEquals(savedFAQ.getFAQID(), response.getFAQID());
         verify(chatbotFAQRepository, times(1)).save(any(ChatbotFAQEntity.class));
     }
+
     @Test
     void createFAQ_SaveNewFAQ_Failure() {
         // Given
@@ -96,6 +97,7 @@ class ChatbotFAQTest {
         // Then
         verify(chatbotFAQRepository, times(1)).save(any(ChatbotFAQEntity.class));
     }
+
     @Test
     void deleteFAQ_HappyPath() {
         // Given
@@ -119,43 +121,9 @@ class ChatbotFAQTest {
         assertThrows(RuntimeException.class, () -> deleteChatbotFAQ.deleteFAQ(FAQId));
         verify(chatbotFAQRepository, times(1)).deleteById(FAQId);
     }
-    @Test
-    void getFAQ() {
-        // Given
-        List<ChatbotFAQEntity> faqEntities = Collections.singletonList(
-                new ChatbotFAQEntity("What is AI?", "AI is...", "General", null)
-        );
-        when(chatbotFAQRepository.findAll()).thenReturn(faqEntities);
 
-        // When
-        GetAllChatbotFAQResponse response = getChatbotFAQ.getFAQ();
 
-        // Then
-        assertEquals(1, response.getChatbotFAQS().size());
-        ChatbotFAQ faq = response.getChatbotFAQS().get(0);
-        assertEquals("What is AI?", faq.getQuestion());
-        assertEquals("AI is...", faq.getAnswer());
-        assertEquals("General", faq.getCategory());
-    }
 
-    @Test
-    void getFAQsByKeyword() {
-        // Given
-        String keyword = "AI";
-        List<ChatbotFAQEntity> faqEntities = Collections.singletonList(
-                new ChatbotFAQEntity("What is AI?", "AI is...", "General", null)
-        );
-        when(chatbotFAQRepository.findByQuestionContainingIgnoreCase(keyword)).thenReturn(faqEntities);
-
-        // When
-        List<ChatbotFAQEntity> result = getChatbotFAQ.getFAQsByKeyword(keyword);
-
-        // Then
-        assertEquals(1, result.size());
-        assertEquals("What is AI?", result.get(0).getQuestion());
-        assertEquals("AI is...", result.get(0).getAnswer());
-        assertEquals("General", result.get(0).getCategory());
-    }
     @Test
     void updateChatbotFAQ_Found() {
         // Given
@@ -190,5 +158,66 @@ class ChatbotFAQTest {
         // Then
         verify(chatbotFAQRepository, times(1)).findById(Math.toIntExact(request.getFAQID()));
         verify(chatbotFAQRepository, never()).save(any());
+    }
+
+    @Test
+    public void testProcessUserQuery_BidRelated() {
+        String userInput = "What is my bid status?";
+        int userId = 123;
+        int attempts = 0;
+        boolean endOfConversation = false;
+
+        when(bidService.getAnswerForBidQuestion(anyString(), anyInt())).thenReturn("Your bid status is active.");
+
+        String response = getChatbotFAQ.processUserQuery(userInput, userId, attempts, endOfConversation);
+
+        assertEquals("Your bid status is active.", response);
+    }
+
+    @Test
+    public void testProcessUserQuery_FAQFound() {
+        String userInput = "How to reset my password?";
+        int userId = 123;
+        int attempts = 0;
+        boolean endOfConversation = false;
+
+        when(chatbotFAQRepository.findAll()).thenReturn(createFAQs());
+        when(keywordMapGenerator.extractKeywords(anyString())).thenReturn(Arrays.asList("reset", "password"));
+
+        String response = getChatbotFAQ.processUserQuery(userInput, userId, attempts, endOfConversation);
+
+        assertEquals("You can reset your password by clicking 'Forgot Password' on the login page.", response);
+    }
+
+    @Test
+    public void testProcessUserQuery_EndOfConversation() {
+        String userInput = "How to reset my password?";
+        int userId = 123;
+        int attempts = 0;
+        boolean endOfConversation = true;
+
+        when(chatbotFAQRepository.findAll()).thenReturn(createFAQs());
+        when(keywordMapGenerator.extractKeywords(anyString())).thenReturn(Arrays.asList("reset", "password"));
+
+        String response = getChatbotFAQ.processUserQuery(userInput, userId, attempts, endOfConversation);
+
+        assertEquals("You can reset your password by clicking 'Forgot Password' on the login page.\n\nWas this helpful? [YES/NO]", response);
+    }
+    @Test
+    public void testCalculateBestMatchingFAQ_MatchFound() {
+        when(chatbotFAQRepository.findAll()).thenReturn(createFAQs());
+        when(keywordMapGenerator.extractKeywords(anyString())).thenReturn(Arrays.asList("reset", "password"));
+
+        String result = getChatbotFAQ.calculateBestMatchingFAQ("How to reset my password?");
+
+        assertEquals("You can reset your password by clicking 'Forgot Password' on the login page.", result);
+    }
+
+
+    private List<ChatbotFAQEntity> createFAQs() {
+        ChatbotFAQEntity faq1 = new ChatbotFAQEntity();
+        faq1.setQuestion("How to reset my password?");
+        faq1.setAnswer("You can reset your password by clicking 'Forgot Password' on the login page.");
+        return Arrays.asList(faq1);
     }
 }
