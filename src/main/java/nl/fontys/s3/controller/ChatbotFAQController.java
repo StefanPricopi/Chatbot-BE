@@ -2,12 +2,9 @@ package nl.fontys.s3.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.business.CreateChatbotFAQ;
-import nl.fontys.s3.business.DeleteChatbotFAQ;
-import nl.fontys.s3.business.GetChatbotFAQ;
-import nl.fontys.s3.business.UpdateChatbotFAQ;
+import nl.fontys.s3.business.*;
 import nl.fontys.s3.business.impl.BidService;
-import nl.fontys.s3.business.impl.CalculateFAQStatistics;
+import nl.fontys.s3.business.impl.CalculateFAQStatisticsImpl;
 import nl.fontys.s3.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

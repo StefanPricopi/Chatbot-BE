@@ -31,7 +31,7 @@ public class DeleteUserImplTest {
 
         deleteUserImpl.deleteUser(targetId);
 
-        verify(userRepository, times(1)).deleteByUserId(targetId);
+        verify(userRepository, times(1)).deleteById(targetId);
         assertEquals(userRepository.findById(targetId), Optional.empty());
     }
 }

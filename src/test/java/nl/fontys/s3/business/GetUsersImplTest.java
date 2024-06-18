@@ -2,7 +2,7 @@ package nl.fontys.s3.business;
 
 import nl.fontys.s3.business.impl.CreateUserImpl;
 import nl.fontys.s3.business.impl.GetUsersImpl;
-import nl.fontys.s3.domain.GetAllUsersResponse;
+import nl.fontys.s3.domain.users.GetAllUsersResponse;
 import nl.fontys.s3.persistence.UserRepository;
 import nl.fontys.s3.persistence.entity.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,25 +32,25 @@ public class GetUsersImplTest {
     public void testGetUsersImpl_Success(){
 
         UserEntity JohnDoe = UserEntity.builder()
-                .userId(1L)
-                .userName("John Doe")
+                .userid(1L)
+                .username("John Doe")
                 .password("johndoe123")
                 .email("johndoe@gmail.com")
-                .role("CUSTOMER")
+                .roles("CUSTOMER")
                 .build();
         UserEntity JaneDoe = UserEntity.builder()
-                .userId(1L)
-                .userName("Jane Doe")
+                .userid(1L)
+                .username("Jane Doe")
                 .password("janedoe123")
                 .email("janedoe@gmail.com")
-                .role("CUSTOMER")
+                .roles("CUSTOMER")
                 .build();
         UserEntity Admin = UserEntity.builder()
-                .userId(1L)
-                .userName("Admin")
+                .userid(1L)
+                .username("Admin")
                 .password("admin123")
                 .email("admin@gmail.com")
-                .role("ADMIN")
+                .roles("ADMIN")
                 .build();
 
         List<UserEntity> userList = new ArrayList<>(Arrays.asList(JohnDoe, JaneDoe, Admin));
