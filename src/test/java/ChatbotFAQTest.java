@@ -2,7 +2,6 @@ import nl.fontys.s3.business.impl.*;
 import nl.fontys.s3.domain.*;
 import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQRequest;
 import nl.fontys.s3.domain.chatbotFAQ.CreateChatbotFAQResponse;
-import nl.fontys.s3.domain.chatbotFAQ.GetAllChatbotFAQResponse;
 import nl.fontys.s3.domain.chatbotFAQ.UpdateChatbotFAQRequest;
 import nl.fontys.s3.persistence.ChatbotFAQJpaRepository;
 import nl.fontys.s3.persistence.entity.ChatbotFAQEntity;
@@ -12,10 +11,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class ChatbotFAQTest {
@@ -122,8 +125,6 @@ class ChatbotFAQTest {
         verify(chatbotFAQRepository, times(1)).deleteById(FAQId);
     }
 
-
-
     @Test
     void updateChatbotFAQ_Found() {
         // Given
@@ -167,11 +168,21 @@ class ChatbotFAQTest {
         int attempts = 0;
         boolean endOfConversation = false;
 
-        when(bidService.getAnswerForBidQuestion(anyString(), anyInt())).thenReturn("Your bid status is active.");
+        when(chatbotFAQRepository.findAll()).thenReturn(createFAQsForProcessUserQuery());
+        when(keywordMapGenerator.extractKeywords(anyString())).thenReturn(Arrays.asList("bid", "status"));
+        when(bidService.getBidStatusForUser(anyInt())).thenReturn("Your bid for the product: \"Sample Product\" has the status: \"active\".\n");
 
         String response = getChatbotFAQ.processUserQuery(userInput, userId, attempts, endOfConversation);
 
-        assertEquals("Your bid status is active.", response);
+        assertEquals("Your bid for the product: \"Sample Product\" has the status: \"active\".\n", response);
+    }
+
+    private List<ChatbotFAQEntity> createFAQsForProcessUserQuery() {
+        ChatbotFAQEntity faq1 = new ChatbotFAQEntity();
+        faq1.setQuestion("Is my bid accepted?");
+        faq1.setAnswer("Your bid status is active.");
+        faq1.setCategory("Bid");
+        return Arrays.asList(faq1);
     }
 
     @Test
@@ -203,16 +214,17 @@ class ChatbotFAQTest {
 
         assertEquals("You can reset your password by clicking 'Forgot Password' on the login page.\n\nWas this helpful? [YES/NO]", response);
     }
+
     @Test
     public void testCalculateBestMatchingFAQ_MatchFound() {
         when(chatbotFAQRepository.findAll()).thenReturn(createFAQs());
         when(keywordMapGenerator.extractKeywords(anyString())).thenReturn(Arrays.asList("reset", "password"));
 
-        String result = getChatbotFAQ.calculateBestMatchingFAQ("How to reset my password?");
+        ChatbotFAQEntity result = getChatbotFAQ.calculateBestMatchingFAQ("How to reset my password?");
 
-        assertEquals("You can reset your password by clicking 'Forgot Password' on the login page.", result);
+        assertNotNull(result);
+        assertEquals("You can reset your password by clicking 'Forgot Password' on the login page.", result.getAnswer());
     }
-
 
     private List<ChatbotFAQEntity> createFAQs() {
         ChatbotFAQEntity faq1 = new ChatbotFAQEntity();

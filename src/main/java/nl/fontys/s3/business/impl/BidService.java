@@ -37,12 +37,5 @@ public class BidService {
         return response.toString();
     }
 
-    public String getAnswerForBidQuestion(String question, int userId) {
-        if (question.contains("cancel")) {
-            return "Yes, you can cancel your active bid by contacting our customer support team at support@example.com.";
-        } else if (question.contains("accepted")) {
-            return getBidStatusForUser(userId);
-        }
-        return "Sorry, I couldn't find an answer to your question.";
-    }
+
 }
