@@ -66,7 +66,6 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
 
     @Override
     public List<ChatbotFAQEntity> getFAQsByKeyword(String keyword) {
-        // Implementation goes here
         return null;
     }
 
@@ -75,13 +74,18 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
         // Preprocess user input (optional)
         String processedInput = userInput.toLowerCase();
 
-        // Check if the query is bid-related
+        // Calculate the best matching FAQ for the processed input
+        ChatbotFAQEntity maxMatchedFAQ = calculateBestMatchingFAQ(processedInput);
+
         String response;
-        if (isBidRelated(processedInput)) {
-            response = bidService.getAnswerForBidQuestion(processedInput, userId);
+        if (maxMatchedFAQ != null) {
+            if ("is my bid accepted?".equalsIgnoreCase(maxMatchedFAQ.getQuestion())) {
+                response = bidService.getBidStatusForUser(userId);
+            } else {
+                response = maxMatchedFAQ.getAnswer();
+            }
         } else {
-            // Calculate the best matching FAQ for the processed input
-            response = calculateBestMatchingFAQ(processedInput);
+            response = "Sorry, I couldn't find an answer to your question.";
         }
 
         if (response == null || response.equals("Sorry, I couldn't find an answer to your question.")) {
@@ -105,20 +109,9 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
         return keywordMap;
     }
 
-    private boolean isBidRelated(String input) {
-        // Define bid-related keywords
-        List<String> bidKeywords = List.of("bid", "bids", "auction", "offer");
 
-        // Check if the input contains any bid-related keywords
-        for (String keyword : bidKeywords) {
-            if (input.contains(keyword)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    private String calculateBestMatchingFAQ(String input) {
+    public ChatbotFAQEntity calculateBestMatchingFAQ(String input) {
         // Preprocess user input (optional)
         String processedInput = input.toLowerCase();
 
@@ -144,12 +137,7 @@ public class GetChatbotFAQImpl implements GetChatbotFAQ {
             }
         }
 
-        // If a FAQ with matching keywords is found
-        if (maxMatchedFAQ != null) {
-            return maxMatchedFAQ.getAnswer();
-        }
-
-        return "Sorry, I couldn't find an answer to your question.";
+        return maxMatchedFAQ;
     }
 
     private int calculateMatchingScore(String input, String question) {
