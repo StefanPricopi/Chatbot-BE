@@ -1,6 +1,7 @@
 package nl.fontys.s3.business.impl;
 
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.business.CalculateFAQStatistics;
 import nl.fontys.s3.business.GetChatbotFAQ;
 import nl.fontys.s3.domain.FAQStatistics;
 import nl.fontys.s3.persistence.ChatlogRepoJPA;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
-public class CalculateFAQStatistics {
+public class CalculateFAQStatisticsImpl implements CalculateFAQStatistics {
     private final ChatlogRepoJPA chatlogRepoJPA;
     private final GetChatbotFAQ getChatbotFAQ;
 
